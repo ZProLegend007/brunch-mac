@@ -241,9 +241,9 @@ fi
 reset
 
 echo "Summary of the configuration:"
-echo "options: $selected_options + "acpi_power_button" and "pwa" by default."
+echo "options: $selected_options"
 echo "kernel: $selected_kernel obviously :)"
-echo "kernel commandline parameters: $selected_cmdline_params intel_iommu=on iommu=pt pcie_ports=compat"
+echo "kernel commandline parameters: $selected_cmdline_params"
 echo "verbose mode: $verbose_mode"
 echo "brunch bootsplash: $selected_bootsplash"
 echo ""

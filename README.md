@@ -1,3 +1,3 @@
-Specific repo used for automated Brunch releases building.
+Repo used for T2 MacBook optimized Brunch release building.
 
-The releases in this repository are therefore experimental, use at your own risk!
+:)
