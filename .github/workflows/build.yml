@@ -157,7 +157,7 @@ jobs:
           artifacts: "${{ env.RELEASE_FILE }}"
           token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: false
-          tag: "${{ env.RELEASE_TAG }}"
-          name: "${{ env.RELEASE_NAME }}"
+          tag: "${{ env.RELEASE_TAG }} +1"
+          name: "${{ env.RELEASE_NAME }} +1"
           commit: "${{ github.ref_name }}"
           body: "${{ github.event.head_commit.message }}"
