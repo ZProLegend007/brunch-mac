@@ -222,7 +222,7 @@ selected_cmdline_params="$returned_values"
 reset
 
 read -rp "Add additional kernel command line parameters here if needed. Defaults for T2 MacBooks are already enabled." returned_values
-selected_cmdline_params="$selected_cmdline_params $returned_values intel_iommu=on iommu=pt pcie_ports=compat"
+selected_cmdline_params="$selected_cmdline_params $returned_values intel_iommu=on iommu=pt pcie_ports=compat brcmfmac.feature_disable=0x82000"
 
 reset
 
