@@ -3,7 +3,7 @@ Repo used for T2 MacBook optimized Brunch release building.
 :)
 
 
-Here is what is being fixed.
+Here is what is being worked on or has been fixed.
 
 - [ ]  Bluetooth 
 - [ ]  Internal Speakers audio
