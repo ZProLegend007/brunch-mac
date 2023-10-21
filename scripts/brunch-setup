@@ -200,7 +200,7 @@ else
 	echo "Select your options."
 fi
 multiselect "$options_page1" ","
-selected_options="$returned_values acpi_power_button pwa"
+selected_options="$returned_values acpi_power_button pwa advanced_als"
 
 reset
 
