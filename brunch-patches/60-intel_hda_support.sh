@@ -14,7 +14,7 @@ if [ "$native_chromebook_image" -eq 1 ]; then exit 0; fi
 
 ret=0
 
-if [ ! "$(ls /roota/etc/modprobe.d | grep 'alsa-.*\.conf' | wc -l)" -eq 0 ]; then rm /roota/etc/modprobe.d/alsa-*.conf; fi
+#if [ ! "$(ls /roota/etc/modprobe.d | grep 'alsa-.*\.conf' | wc -l)" -eq 0 ]; then rm /roota/etc/modprobe.d/alsa-*.conf; fi
 if [ ! "$?" -eq 0 ]; then ret=$((ret + (2 ** 0))); fi
 if [ "$chromebook_audio" -eq 0 ]; then
 	sed -i '/cards_limit/d' /roota/etc/modprobe.d/alsa.conf
