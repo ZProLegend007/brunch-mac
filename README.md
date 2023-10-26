@@ -8,6 +8,7 @@ Here is what is being worked on or has been fixed.
 - [ ]  Bluetooth 
 - [ ]  Internal Speakers audio
 - [ ]  Suspend/Sleep - (Causes shutdown.)
+- [ ]  Play store reduced performance
 - [x]  Ambient Light Sensor - (Currently tuning.)
 - [x]  Touchpad
 - [x]  Battery
