@@ -182,7 +182,7 @@ reset
 returned_values=""
 
 available_kernels="macbook-t2"
-echo "Press ENTER"
+echo "Press ENTER :)"
 singleselect "$available_kernels"
 selected_kernel="$returned_values"
 
@@ -190,7 +190,7 @@ reset
 
 case "$selected_kernel" in
 	*)
-options_page1="enable_updates;android_init_fix;android_init_fix2;mount_internal_drives;disable_sdcard_storage;disable_usb_storage;no_camera_config;invert_camera_order;alt_touchpad_config;alt_touchpad_config2;alt_touchpad_config3;touchpad_resume_fix;internal_mic_fix;internal_mic_fix2;force_tablet_mode;suspend_s3;advanced_als"
+options_page1="enable_updates;android_init_fix;android_init_fix2;mount_internal_drives;disable_sdcard_storage;disable_usb_storage;no_camera_config;invert_camera_order;alt_touchpad_config;alt_touchpad_config2;alt_touchpad_config3;touchpad_resume_fix;internal_mic_fix;internal_mic_fix2;force_tablet_mode;suspend_s3"
 	;;
 esac
 
@@ -200,7 +200,7 @@ else
 	echo "Select your options."
 fi
 multiselect "$options_page1" ","
-selected_options="$returned_values acpi_power_button pwa advanced_als"
+selected_options="$returned_values"
 
 reset
 
@@ -222,7 +222,7 @@ selected_cmdline_params="$returned_values"
 reset
 
 read -rp "Add additional kernel command line parameters here if needed. Defaults for T2 MacBooks are already enabled." returned_values
-selected_cmdline_params="$selected_cmdline_params $returned_values intel_iommu=on iommu=pt pcie_ports=compat"
+selected_cmdline_params="$selected_cmdline_params $returned_values"
 
 reset
 
@@ -232,7 +232,7 @@ if [ ! -z "$returned_values" ] && [ "$returned_values" == "debug" ]; then
 else
 	verbose_mode=0
 	reset
-	echo "Select the brunch bootsplash to use."
+	echo "Select the brunch-mac bootsplash to use. The default has been custom made."
 	available_bootsplashes="default_dark;default_light;blank;brunchbook_dark;brunchbook_light;colorful_dark;colorful_light;croissant_dark;croissant_light;neon_blue_dark;neon_blue_light;neon_green_dark;neon_green_light;neon_pink_dark;neon_pink_light;neon_red_dark;neon_red_light;brunch-logo-dark;brunch-logo-light;simple-dark;simple-light"
 	singleselect "$available_bootsplashes"
 	selected_bootsplash="$returned_values"
@@ -245,7 +245,7 @@ echo "options: $selected_options"
 echo "kernel: $selected_kernel obviously :)"
 echo "kernel commandline parameters: $selected_cmdline_params"
 echo "verbose mode: $verbose_mode"
-echo "brunch bootsplash: $selected_bootsplash"
+echo "brunch-mac bootsplash: $selected_bootsplash"
 echo ""
 
 cp /mnt/stateful_partition/unencrypted/brunch_config/efi/boot/template.cfg /mnt/stateful_partition/unencrypted/brunch_config/efi/boot/settings.cfg
@@ -255,4 +255,4 @@ sed -i "s@cmdline_params=\"\"@cmdline_params=\"$selected_cmdline_params\"@g" /mn
 sed -i "s@verbose=0@verbose=$verbose_mode@g" /mnt/stateful_partition/unencrypted/brunch_config/efi/boot/settings.cfg
 sed -i "s@brunch_bootsplash=\"default\"@brunch_bootsplash=\"$selected_bootsplash\"@g" /mnt/stateful_partition/unencrypted/brunch_config/efi/boot/settings.cfg
 
-echo "Brunch configuration saved."
+echo "Brunch-mac configuration saved."

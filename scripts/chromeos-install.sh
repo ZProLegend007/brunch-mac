@@ -7,7 +7,7 @@ if [ $(whoami) != "root" ]; then echo "Please run with this script with sudo"; e
 usage()
 {
 	echo ""
-	echo "Brunch installer: install ChromeOS on device or create disk image from the brunch framework."
+	echo "Brunch-mac installer: install ChromeOS on device or create disk image from the brunch-mac framework."
 	echo "Usage: chromeos_install.sh [-s X] [-l] -src chromeos_recovery_image_path -dst destination"
 	echo "-src (source), --source (source)			ChromeOS recovery image"
 	echo "-dst (destination), --destination (destination)	Device (e.g. /dev/sda) or Disk image file (e.g. chromeos.img)"
@@ -211,7 +211,7 @@ local destination_start
 local size
 image="$source"
 if [ ! -z "$zenity" ]; then
-	write_base_table "$destination" > /dev/null >(zenity --height=480 --width=640 --title="Brunch installer" --progress --auto-close --pulsate --text="Creating partition table..." --percentage=100)
+	write_base_table "$destination" > /dev/null >(zenity --height=480 --width=640 --title="Brunch-mac installer" --progress --auto-close --pulsate --text="Creating partition table..." --percentage=100)
 else
 	echo "Creating partition table..."
 	write_base_table "$destination"
@@ -246,7 +246,7 @@ for (( i=1; i<=12; i++ )); do
 	esac
 	destination_start=$(cgpt show -i $i -b "$destination")
 	if [ ! -z "$zenity" ]; then
-		dd if="$image" ibs=512 count="$size" skip="$source_start" 2> /dev/null | pv -n -s $(( $size * 512 )) 2> >(zenity --height=480 --width=640 --title="Brunch installer" --progress --auto-close --text="Writing partition $i..." --percentage=0 --no-cancel) | dd of="$destination" obs=512 seek="$destination_start" conv=notrunc 2> /dev/null || error $i
+		dd if="$image" ibs=512 count="$size" skip="$source_start" 2> /dev/null | pv -n -s $(( $size * 512 )) 2> >(zenity --height=480 --width=640 --title="Brunch-mac installer" --progress --auto-close --text="Writing partition $i..." --percentage=0 --no-cancel) | dd of="$destination" obs=512 seek="$destination_start" conv=notrunc 2> /dev/null || error $i
 	else
 		dd if="$image" ibs=512 count="$size" skip="$source_start" 2> /dev/null | pv -s $(( $size * 512 )) | dd of="$destination" obs=512 seek="$destination_start" conv=notrunc 2> /dev/null || error $i
 	fi
@@ -269,12 +269,12 @@ if [ ! -z "$zenity" ]; then
 		fi
 		t=$((t + 1))
 	done
-	dev=$(zenity --height=480 --width=640 --title="Brunch installer" --list --radiolist --text "Select the drive that you want to use for installation." --column "Select" --column "Device" --column "Size (in GB)" $test --ok-label="Next")
+	dev=$(zenity --height=480 --width=640 --title="Brunch-mac installer" --list --radiolist --text "Select the drive that you want to use for installation." --column "Select" --column "Device" --column "Size (in GB)" $test --ok-label="Next")
 	if [ -z "$dev" ]; then exit 1; else destination="$dev"; fi
 	check_args
-	if [ ! -b "$destination" ] || [ ! -d /sys/block/"${destination#/dev/}" ]; then zenity --height=480 --width=640 --title="Brunch installer" --error --text="$destination is not a valid disk name"; exit 1; fi
-	if [ $(blockdev --getsz "$destination") -lt 29360128 ]; then zenity --height=480 --width=640 --title="Brunch installer" --error --text="Not enough space on device $destination"; exit 1; fi
-	if ! zenity --height=480 --width=640 --title="Brunch installer" --question --text "All data on device $destination will be lost, are you sure that you want to continue?"; then exit 1; fi
+	if [ ! -b "$destination" ] || [ ! -d /sys/block/"${destination#/dev/}" ]; then zenity --height=480 --width=640 --title="Brunch-mac installer" --error --text="$destination is not a valid disk name"; exit 1; fi
+	if [ $(blockdev --getsz "$destination") -lt 29360128 ]; then zenity --height=480 --width=640 --title="Brunch-mac installer" --error --text="Not enough space on device $destination"; exit 1; fi
+	if ! zenity --height=480 --width=640 --title="Brunch-mac installer" --question --text "All data on device $destination will be lost, are you sure that you want to continue?"; then exit 1; fi
 else
 	check_args
 	if [ ! -b "$destination" ] || [ ! -d /sys/block/"${destination#/dev/}" ]; then echo "$destination is not a valid disk name"; exit 1; fi
@@ -288,13 +288,13 @@ fi
 umount "$destination"* > /dev/null 2>&1
 install_singleboot
 if [ ! -z "$zenity" ]; then
-zenity --height=480 --width=640 --title="Brunch installer" --info --text="Brunch has been successfully installed on the device $destination." --ok-label="Exit"
+zenity --height=480 --width=640 --title="Brunch-mac installer" --info --text="Brunch-mac has been successfully installed on the device $destination." --ok-label="Exit"
 else
-echo -e "Brunch has been successfully installed on the device $destination."
+echo -e "Brunch-mac has been successfully installed on the device $destination."
 fi
 }
 
-install_dualboot()
+install_multiboot()
 {
 local source_loop
 local source_part
@@ -303,7 +303,7 @@ local size
 if [ -z "$zenity" ]; then echo "Creating image file"; fi
 dd if=/dev/zero of="$fullpath" bs=1073741824 seek=$image_size count=0 2> /dev/null
 if [ ! -z "$zenity" ]; then
-	write_base_table "$fullpath" > /dev/null >(zenity --height=480 --width=640 --title="Brunch installer" --progress --auto-close --pulsate --text="Creating partition table..." --percentage=100)
+	write_base_table "$fullpath" > /dev/null >(zenity --height=480 --width=640 --title="Brunch-mac installer" --progress --auto-close --pulsate --text="Creating partition table..." --percentage=100)
 else
 	echo "Creating partition table..."
 	write_base_table "$fullpath"
@@ -337,7 +337,7 @@ for (( i=1; i<=12; i++ )); do
 		;;
 	esac
 	if [ ! -z "$zenity" ]; then
-		dd if="$source_part" ibs=1048576 2> /dev/null | pv -n -s $(( $size * 512 )) 2> >(zenity --height=480 --width=640 --title="Brunch installer" --progress --auto-close --text="Writing partition $i..." --percentage=0 --no-cancel) | dd of="$destination_loop"p"$i" obs=1048576 2> /dev/null || error $i
+		dd if="$source_part" ibs=1048576 2> /dev/null | pv -n -s $(( $size * 512 )) 2> >(zenity --height=480 --width=640 --title="Brunch-mac installer" --progress --auto-close --text="Writing partition $i..." --percentage=0 --no-cancel) | dd of="$destination_loop"p"$i" obs=1048576 2> /dev/null || error $i
 	else
 		dd if="$source_part" ibs=1048576 2> /dev/null | pv -s $(( $size * 512 )) | dd of="$destination_loop"p"$i" obs=1048576 2> /dev/null || error $i
 	fi
@@ -349,11 +349,11 @@ losetup -d $destination_loop
 grub_config()
 {
 if [ -z "$zenity" ] && [ ! -z "$wsl" ]; then
-	read -p "The ChromeOS disk image has been created. If you want to dual boot this disk image with Grub2Win type \"dualboot\" and press ENTER. Otherwise if you want to install this disk image on a usb flashdrive / sdcard just press ENTER:"$'\n' veriftype
-	if [ "$veriftype" == "dualboot" ]; then type="Dualboot (create an image)"; else type="Singleboot (install on a disk)"; fi
+	read -p "The ChromeOS disk image has been created. If you want to multi boot this disk image type \"mboot\" and press ENTER. Otherwise if you want to install this disk image on a usb flashdrive / sdcard just press ENTER:"$'\n' veriftype
+	if [ "$veriftype" == "mboot" ]; then type="Multiboot (create an image)"; else type="Singleboot (install on a disk)"; fi
 	echo -e ""
 fi
-if [ "$type" == "Dualboot (create an image)" ]; then
+if [ "$type" == "Multiboot (create an image)" ]; then
 	if [ ! -z "$wsl" ]; then
 		img_uuid=$(su $(getent passwd $SUDO_UID | cut -d: -f1) -c "PATH=$PATH:/mnt/c/Windows/System32 mountvol.exe $(echo ${fullpath:5:1} | tr a-z A-Z): /L | cut -d'{' -f2 | cut -d'}' -f1")
 	else
@@ -361,24 +361,24 @@ if [ "$type" == "Dualboot (create an image)" ]; then
 	fi
 	img_path=$(if [ $(findmnt -n -o TARGET -T "$fullpath") == "/" ]; then echo $(realpath "$fullpath"); else echo $(realpath "$fullpath") | sed "s#$(findmnt -n -o TARGET -T "$fullpath")##g"; fi)
 	if [ -z "$wsl" ] && ([ "$(grep -o '^ID=[^,]\+' /etc/os-release | cut -d'=' -f2)" == "ubuntu" ] || [ "$(grep -o '^ID=[^,]\+' /etc/os-release | cut -d'=' -f2)" == "linuxmint" ] || [ "$(grep -o '^ID=[^,]\+' /etc/os-release | cut -d'=' -f2)" == "fedora" ] || [ "$(grep -o '^ID=[^,]\+' /etc/os-release | cut -d'=' -f2)" == "zorin" ]); then remove_tpm="\n	rmmod tpm"; fi
-	config="menuentry \"Brunch\" --class \"brunch\" {$remove_tpm
+	config="menuentry \"Brunch-mac\" --class \"brunch\" {$remove_tpm
 	img_path="$img_path"
 	img_uuid="$img_uuid"
 	search --no-floppy --set=root --file "\$img_path"
 	loopback loop "\$img_path"
 	source (loop,12)/efi/boot/settings.cfg
 	if [ -z \$verbose ] -o [ \$verbose -eq 0 ]; then
-		linux (loop,7)\$kernel boot=local noresume noswap loglevel=7 options=\$options chromeos_bootsplash=\$chromeos_bootsplash \$cmdline_params \\
+		linux (loop,7)\$kernel boot=local noresume noswap loglevel=7 intel_iommu=on iommu=pt pcie_ports=compat options=\"$options advanced_als pwa acpi_power_button" chromeos_bootsplash=\$chromeos_bootsplash \$cmdline_params \\
 			cros_secure cros_debug img_uuid="\$img_uuid" img_path="\$img_path" \\
 			console= vt.global_cursor_default=0 brunch_bootsplash=\$brunch_bootsplash quiet
 	else
-		linux (loop,7)\$kernel boot=local noresume noswap loglevel=7 options=\$options chromeos_bootsplash=\$chromeos_bootsplash \$cmdline_params \\
+		linux (loop,7)\$kernel boot=local noresume noswap loglevel=7 intel_iommu=on iommu=pt pcie_ports=compat options=\"$options advanced_als pwa acpi_power_button" chromeos_bootsplash=\$chromeos_bootsplash \$cmdline_params \\
 			cros_secure cros_debug img_uuid="\$img_uuid" img_path="\$img_path"
 	fi
 	initrd (loop,7)/lib/firmware/amd-ucode.img (loop,7)/lib/firmware/intel-ucode.img (loop,7)/initramfs.img
 }
 
-menuentry \"Brunch settings\" --class \"brunch-settings\" {$remove_tpm
+menuentry \"Brunch-mac settings\" --class \"brunch-settings\" {$remove_tpm
 	img_path="$img_path"
 	img_uuid="$img_uuid"
 	search --no-floppy --set=root --file "\$img_path"
@@ -390,11 +390,11 @@ menuentry \"Brunch settings\" --class \"brunch-settings\" {$remove_tpm
 }"
 	echo -e "$config" > "$fullpath".grub.txt
 	if [ ! -z "$wsl" ]; then
-		grubinstall="The ChromeOS dual boot disk image has been created and the config needed to boot ChromeOS from Grub2Win has been generated in the file:\n$(echo ${fullpath:5:1} | tr a-z A-Z):\\\\$(echo ${fullpath:7} | sed 's@\/@\\\\@g').grub.txt\n\nNow, install Grub2Win and launch it, click on \"Manage Boot Menu\" -> \"Add a new entry\" -> set \"Type\" as \"Create user section\", open the file $(echo ${fullpath:5:1} | tr a-z A-Z):\\\\$(echo ${fullpath:7} | sed 's@\/@\\\\@g').grub.txt and copy its content in the Grub2Win notepad window, save and close the Grub2Win notepad window then click \"Apply\" and \"OK\"."
-		finalise="Please note that ChromeOS will not be bootable and / or stable if you do not perform the below actions (Refer to Windows online resources if needed):\n- Ensure that bitlocker is disabled on the drive which contains the ChromeOS image or disable it.\n- Disable fast startup.\n- Disable hibernation.\n\nOnce done, reboot your computer and select ChromeOS from the Grub2Win menu."
+		grubinstall="The ChromeOS multi boot disk image has been created and the config needed to boot ChromeOS from Grub has been generated in the file:\n$(echo ${fullpath:5:1} | tr a-z A-Z):\\\\$(echo ${fullpath:7} | sed 's@\/@\\\\@g').grub.txt\n\nNow make sure to add this menuentry to Grub."
+		finalise="Please note that ChromeOS will not be bootable and / or stable if you do not perform the below actions (Refer to Windows online resources if needed):\n- Ensure that bitlocker is disabled on the drive which contains the ChromeOS image or disable it.\n- Disable fast startup.\n- Disable hibernation.\n\nOnce done, reboot your computer and select ChromeOS from the Grub menu."
 		if [ ! -z "$zenity" ]; then
-			zenity --height=480 --width=640 --title="Brunch installer" --info --text="$grubinstall" --ok-label="Next"
-			zenity --height=480 --width=640 --title="Brunch installer" --info --text="$finalise" --ok-label="Exit"
+			zenity --height=480 --width=640 --title="Brunch-mac installer" --info --text="$grubinstall" --ok-label="Next"
+			zenity --height=480 --width=640 --title="Brunch-mac installer" --info --text="$finalise" --ok-label="Exit"
 		else
 			echo -e "$grubinstall"
 			echo -e ""
@@ -404,21 +404,21 @@ menuentry \"Brunch settings\" --class \"brunch-settings\" {$remove_tpm
 		if [ "$(grep -o '^ID=[^,]\+' /etc/os-release | cut -d'=' -f2)" == "fedora" ]; then grub="grub2"; else grub="grub"; fi
 		grubinstall="The grub config needed to boot ChromeOS has been generated in the file \"$fullpath.grub.txt\".\n\nIf you have a linux distro installed which uses grub as bootloader, run the below command to generate the grub config automatically:\nsudo cat /etc/grub.d/40_custom $fullpath.grub.txt | sudo tee /etc/grub.d/99_brunch; sudo chmod 0755 /etc/grub.d/99_brunch; sudo $grub-mkconfig -o /boot/$grub/grub.cfg\n\nOtherwise, add this grub config (lines between stars) manually to another grub bootloader:\n\n ****************************************************************************************** \n$config\n ****************************************************************************************** \n\nOnce the above actions are completed, you can reboot your computer and start ChromeOS"
 		if [ ! -z "$zenity" ]; then
-			zenity --height=480 --width=640 --title="Brunch installer" --info --text="$grubinstall" --ok-label="Exit"
+			zenity --height=480 --width=640 --title="Brunch-mac installer" --info --text="$grubinstall" --ok-label="Exit"
 		else
 			echo -e "$grubinstall"
 		fi
 	fi
 else
 	if [ ! -z "$zenity" ]; then
-		zenity --height=480 --width=640 --title="Brunch installer" --info --text="The ChromeOS image has been successfully created at:\n$(echo ${fullpath:5:1} | tr a-z A-Z):\\\\$(echo ${fullpath:7} | sed 's@\/@\\\\@g')\n\nYou can now install it on a USB flashdrive using rufus." --ok-label="Exit"
+		zenity --height=480 --width=640 --title="Brunch-mac installer" --info --text="The ChromeOS image has been successfully created at:\n$(echo ${fullpath:5:1} | tr a-z A-Z):\\\\$(echo ${fullpath:7} | sed 's@\/@\\\\@g')\n\nYou can now install it on a USB flashdrive using rufus." --ok-label="Exit"
 	else
 		echo -e "The ChromeOS image has been successfully created at:\n$(echo ${fullpath:5:1} | tr a-z A-Z):\\\\$(echo ${fullpath:7} | sed 's@\/@\\\\@g')\n\nYou can now install it on a USB flashdrive using rufus."
 	fi
 fi
 }
 
-dualboot()
+multiboot()
 {
 if [ ! -z "$zenity" ]; then
 	local path
@@ -429,13 +429,13 @@ if [ ! -z "$zenity" ]; then
 	fi
 	if [ -z "$path" ]; then exit 1; else destination="$path"; fi
 	check_args
-	if [[ "$destination" == *"/"* ]] && ([ -z "$(realpath $destination 2> /dev/null)" ] || [ ! -d "$(echo $(realpath $destination) | sed 's@[^/]*$@@')" ]); then echo "Desination path does not exist, please provide an existing path."; dualboot; return; fi
+	if [[ "$destination" == *"/"* ]] && ([ -z "$(realpath $destination 2> /dev/null)" ] || [ ! -d "$(echo $(realpath $destination) | sed 's@[^/]*$@@')" ]); then echo "Desination path does not exist, please provide an existing path."; multiboot; return; fi
 	rm -rf "$destination"
 	if [[ ! $destination == *"/"* ]]; then path="$PWD"; else path="$(realpath "$destination")"; path="$(echo ${path} | sed 's@[^/]*$@@')"; fi
 	fullpath="$path/$(basename $destination)"
-	if [ ! -z "$wsl" ] && [ ! -z "${path##/mnt/*/*}" ]; then zenity --height=480 --width=640 --error --text="The ChromeOS disk image has to be installed outside of the WSL VM, please specify a path such as /mnt/\&lt;drive letter\&gt;/..."; dualboot; return; fi
-	if [ $(( ($(df -k "$path" | sed 's/  */ /g' | tail -1 | cut -d' ' -f4) / 1024 / 1024) - 14 )) -lt 0 ]; then  zenity --height=480 --width=640 --error --text="Not enough space to create image file, the minimum size is 14 GB. Verify that the path you have selected points to a partition with more than 14GB available."; dualboot; fi
-	if [ -z "$image_size" ]; then image_size=$(zenity --height=480 --width=640 --title="Brunch installer" --scale --text "This partition has $(( ($(df -k $path | sed 's/  */ /g' | tail -1 | cut -d' ' -f4) / 1024 / 1024) )) GB available.\n how much would you like to allocate for ChromeOS ?\n (Around 10GB will be occupied by system files, the remaining space will be available).\n" --min-value=14 --max-value=$(( ($(df -k --output=avail $path | sed 1d) / 1024 / 1024) )) --value=14 --step 1); fi
+	if [ ! -z "$wsl" ] && [ ! -z "${path##/mnt/*/*}" ]; then zenity --height=480 --width=640 --error --text="The ChromeOS disk image has to be installed outside of the WSL VM, please specify a path such as /mnt/\&lt;drive letter\&gt;/..."; multiboot; return; fi
+	if [ $(( ($(df -k "$path" | sed 's/  */ /g' | tail -1 | cut -d' ' -f4) / 1024 / 1024) - 14 )) -lt 0 ]; then  zenity --height=480 --width=640 --error --text="Not enough space to create image file, the minimum size is 14 GB. Verify that the path you have selected points to a partition with more than 14GB available."; multiboot; fi
+	if [ -z "$image_size" ]; then image_size=$(zenity --height=480 --width=640 --title="Brunch-mac installer" --scale --text "This partition has $(( ($(df -k $path | sed 's/  */ /g' | tail -1 | cut -d' ' -f4) / 1024 / 1024) )) GB available.\n how much would you like to allocate for ChromeOS ?\n (Around 10GB will be occupied by system files, the remaining space will be available).\n" --min-value=14 --max-value=$(( ($(df -k --output=avail $path | sed 1d) / 1024 / 1024) )) --value=14 --step 1); fi
 	if [ -z "$image_size" ]; then exit 1; fi
 else
 	check_args
@@ -453,7 +453,7 @@ dd if=/dev/zero of="$destination" bs=1073741824 seek=$image_size count=0 2> /dev
 install_singleboot
 echo -e "The ChromeOS image has been successfully created at:\n$fullpath\n\nYou can now install it on a USB flashdrive using balenaEtcher."
 else
-install_dualboot
+install_multiboot
 grub_config
 fi
 }
@@ -463,12 +463,12 @@ if [ ! -z "$wsl" ] && [ ! -e /dev/loop-control ]; then echo "WSL1 is not support
 if [ $# -eq 0 ]; then
 	if ! which zenity > /dev/null 2>&1 ; then echo "To use the GUI installer you need a Linux environment with GUI apps support (actual Linux distro or Windows 11 WSL) and to install the \"zenity\" package."; usage; exit 1; fi
 	zenity=1
-	if ! zenity --height=480 --width=640 --title="Brunch installer" --info --text="Welcome to the Brunch installer.\n\nPlease refer to the brunch github (www.github.com/sebanc/brunch) to identify which recovery image is compatible with your laptop and download it.\n\nUnzip the recovery image and press Next to select it with the file browser." --ok-label="Next"; then exit 0; fi
+	if ! zenity --height=480 --width=640 --title="Brunch-mac installer" --info --text="Welcome to the Brunch-mac installer.\n\nPlease refer to the brunch github (www.github.com/sebanc/brunch) to identify which recovery image is compatible with your laptop and download it.\n\nUnzip the recovery image and press Next to select it with the file browser." --ok-label="Next"; then exit 0; fi
 	source=$(su $(getent passwd "$SUDO_UID" | cut -d: -f1) -c "zenity --height=480 --width=640 --file-selection --title=\"Select the ChromeOS recovery image\" --file-filter=*.bin --filename=\"$(echo $PWD)/\"")
 	if [ -z "$source" ]; then exit 0; fi
 	if [ ! -f "$source" ]; then echo "ChromeOS recovery image $1 not found"; exit 1; fi
 	if [ ! $(dd if="$source" bs=1 count=4 2> /dev/null | od -A n -t x1 | sed 's/ //g') == '33c0fa8e' ] || [ $(cgpt show -i 12 -b "$source") -eq 0 ] || [ $(cgpt show -i 13 -b "$source") -gt 0 ] || [ ! $(cgpt show -i 3 -l "$source") == 'ROOT-A' ]; then echo "$source is not a valid ChromeOS recovey image (have you unzipped it ?)"; exit 1; fi
-	type=$(zenity --height=480 --width=640 --title "Brunch installer" --list --column "Do you want to install brunch as Singleboot or Dualboot ?" "Singleboot (install on a disk)" "Dualboot (create an image)" --ok-label="Next")
+	type=$(zenity --height=480 --width=640 --title "Brunch-mac installer" --list --column "Do you want to install brunch-mac as Singleboot or Multiboot ?" "Singleboot (install on a disk)" "Multiboot (create an image)" --ok-label="Next")
 else
 	while [ $# -gt 0 ]; do
 		case "$1" in
@@ -480,7 +480,7 @@ else
 			;;
 			-dst | --destination)
 			shift
-			if [ -z "${1##/dev/*}" ]; then type="Singleboot (install on a disk)"; else type="Dualboot (create an image)"; fi
+			if [ -z "${1##/dev/*}" ]; then type="Singleboot (install on a disk)"; else type="Multiboot (create an image)"; fi
 			destination="$1"
 			;;
 			-s | --size)
@@ -514,6 +514,6 @@ else
 fi
 if [ "$type" == "Singleboot (install on a disk)" ]; then
 	singleboot
-elif [ "$type" == "Dualboot (create an image)" ]; then
-	dualboot
+elif [ "$type" == "Multiboot (create an image)" ]; then
+	multiboot
 fi
