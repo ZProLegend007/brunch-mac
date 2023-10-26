@@ -368,11 +368,11 @@ if [ "$type" == "Multiboot (create an image)" ]; then
 	loopback loop "\$img_path"
 	source (loop,12)/efi/boot/settings.cfg
 	if [ -z \$verbose ] -o [ \$verbose -eq 0 ]; then
-		linux (loop,7)\$kernel boot=local noresume noswap loglevel=7 intel_iommu=on iommu=pt pcie_ports=compat options=\"$options advanced_als pwa acpi_power_button" chromeos_bootsplash=\$chromeos_bootsplash \$cmdline_params \\
+		linux (loop,7)\$kernel boot=local noresume noswap loglevel=7 intel_iommu=on iommu=pt pcie_ports=compat options="\$options advanced_als pwa acpi_power_button" chromeos_bootsplash=\$chromeos_bootsplash \$cmdline_params \\
 			cros_secure cros_debug img_uuid="\$img_uuid" img_path="\$img_path" \\
 			console= vt.global_cursor_default=0 brunch_bootsplash=\$brunch_bootsplash quiet
 	else
-		linux (loop,7)\$kernel boot=local noresume noswap loglevel=7 intel_iommu=on iommu=pt pcie_ports=compat options=\"$options advanced_als pwa acpi_power_button" chromeos_bootsplash=\$chromeos_bootsplash \$cmdline_params \\
+		linux (loop,7)\$kernel boot=local noresume noswap loglevel=7 intel_iommu=on iommu=pt pcie_ports=compat options="\$options advanced_als pwa acpi_power_button" chromeos_bootsplash=\$chromeos_bootsplash \$cmdline_params \\
 			cros_secure cros_debug img_uuid="\$img_uuid" img_path="\$img_path"
 	fi
 	initrd (loop,7)/lib/firmware/amd-ucode.img (loop,7)/lib/firmware/intel-ucode.img (loop,7)/initramfs.img
