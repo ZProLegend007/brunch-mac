@@ -37,4 +37,4 @@ After that you should have brunch-mac/chromeOS installed! Most people will not n
 
 ## Check out the original [Brunch Framework](https://github.com/sebanc/brunch)
 
-This repo is a fork of the Brunch-unstable building repo, credit to sebanc for the original Brunch Framework and all the effort that he has put in to get it to where it is today.
+This repo is a fork of the Brunch-unstable building repo, credit to sebanc for the original Brunch Framework and all the effort that he has put in to get it to where it is today. For more information on this project, check out his repo.
