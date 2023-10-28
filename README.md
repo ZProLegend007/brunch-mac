@@ -1,23 +1,10 @@
 [license-url]: ./LICENSE
 [license-shield]: https://img.shields.io/github/license/sebanc/brunch?label=License&logo=Github&style=flat-square
 
-# Brunch-mac
+<h1 align="center">Brunch-mac Framework</h1>
+<h3 align="center">A fork of the Brunch Framework focused on optimization for T2 MacBooks</h3>
+
 [![License][license-shield]][license-url]
-
-A repo used for T2 MacBook focused and optimized Brunch releases.
-
-:)
-
-Here is what is being worked on or has been fixed.
-
-- [ ]  Bluetooth 
-- [ ]  Internal Speakers audio
-- [ ]  Suspend/Sleep - (Causes shutdown.)
-- [ ]  Play store reduced performance
-- [x]  Ambient Light Sensor - (Currently tuning.)
-- [x]  Touchpad
-- [x]  Battery
-- [x]  Wi-Fi
 
 ## Install instructions
 
