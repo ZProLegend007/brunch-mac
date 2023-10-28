@@ -22,6 +22,10 @@ After that is completed, depending on your setup you will need to install Grub o
 
 Once you have grub installed you will need to add the previously made Grub menuentry file to Grub. If you are using linux I recommend installing grub-configurator to simplify this and customize Grub.
 
+## Updating
+
+When you have brunch-mac fully installed, make sure you add [this PWA](https://zprolegend007.github.io/brunch-mac-pwa/) so you can update brunch-mac.
+
 After that you should have brunch-mac/chromeOS installed! Most people will not need to use brunch-mac settings as most configs for Macs are enabled by default. If you run into any issues or need any help feel free to make an issue!
 
 ## Check out the original [Brunch Framework](https://github.com/sebanc/brunch)
