@@ -10,7 +10,7 @@
 
 This install guide assumes you already have Windows Bootcamp or linux installed on your device.
 
-To install this fork please download the latest release and place it in a folder on your chosen OS (Other than MacOS). Then head to [this website](https://cros.tech/device/shyvana/) and download the latest chromeOS image, then also place that file in your folder. 
+To install this fork please download the latest release and place it in a folder on your chosen OS (other than MacOS). Then head to [this website](https://cros.tech/device/shyvana/) and download the latest chromeOS image, then also place that file in your folder. 
 
 Then with either WSL or a linux terminal `cd` into your folder and run the command `tar -zxvf *brunchmacfile.tar.gz*`. Make sure to replace the *brunchmacfile* with the actual name of the brunch-mac file that you downloaded. **TIP: Use tab to autofill the file name.**
 
@@ -26,4 +26,4 @@ After that you should have brunch-mac/chromeOS installed! Most people will not n
 
 ## Check out the original [Brunch Framework](https://github.com/sebanc/brunch)
 
-This repo is a fork of the Brunch-unstable building repo, credit to sebanc for the original Brunch Framework and all the effort that he has put in to get it to where it is today. For more information on this project, check out his repo.
+This repo is a fork of the [brunch-unstable](https://github.com/sebanc/brunch-unstable) building repo, credit to sebanc for the original Brunch Framework and all the effort that he has put in to get it to where it is today. For more information on this project, check out his repo.
