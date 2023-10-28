@@ -8,7 +8,9 @@
 
 ## Install instructions
 
-To install this fork please download the latest release and place it in a folder. Then head to [this website](https://cros.tech/device/shyvana/) and download the latest chromeOS image, then also place that file in your folder. 
+This install guide assumes you already have Bootcamp or linux installed on your device.
+
+To install this fork please download the latest release and place it in a folder on your chosen OS (Other than MacOS). Then head to [this website](https://cros.tech/device/shyvana/) and download the latest chromeOS image, then also place that file in your folder. 
 
 Then with either WSL or a linux terminal `cd` into your folder and run the command `tar -zxvf *brunchmacfile.tar.gz*`. Make sure to replace the *brunchmacfile* with the actual name of the brunch-mac file that you downloaded. **TIP: Use tab to autofill the file name.**
 
