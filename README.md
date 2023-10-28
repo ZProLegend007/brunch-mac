@@ -6,7 +6,7 @@
 
 [![License][license-shield]][license-url]
 
-## Install instructions
+## Install Instructions
 
 This install guide assumes you already have Windows Bootcamp or linux installed on your device.
 
@@ -20,13 +20,17 @@ Once the install is completed, if this is your first time installing, make sure 
 
 After that is completed, depending on your setup you will need to install Grub on your Mac. The easiest way to do this is from a linux OS that is already installed. If you don't have this you may need to find another way to install Grub. **Note: You can't install Grub2Win on a MacBook as Windows has no access to the EFI partition.**
 
-Once you have grub installed you will need to add the previously made Grub menuentry file to Grub. If you are using linux I recommend installing grub-configurator to simplify this and customize Grub.
+Once you have grub installed you will need to add the previously made Grub menuentry file to Grub. If you are using linux I recommend installing grub-configurator to simplify this and customize Grub. After that you should have brunch-mac/chromeOS installed! 
 
-## Updating
+## Updating and Settings
 
-When you have brunch-mac fully installed, make sure you add [this PWA](https://zprolegend007.github.io/brunch-mac-pwa/) so you can update brunch-mac.
+Most people will not need to use brunch-mac settings as most configs for Macs are enabled by default. But if you are having any issues or want to change some extra setttings you should check it out. 
 
-After that you should have brunch-mac/chromeOS installed! Most people will not need to use brunch-mac settings as most configs for Macs are enabled by default. If you run into any issues or need any help feel free to make an issue!
+Make sure you add [this PWA](https://zprolegend007.github.io/brunch-mac-pwa/) so you can update brunch-mac.
+
+## Help and Issues
+
+If you run into any problems, issues or need any help feel free to make an issue and I'll make sure to help out as soon as I can!
 
 ## Check out the original [Brunch Framework](https://github.com/sebanc/brunch)
 
