@@ -22,33 +22,19 @@ INSMOD
 while read line
 do
 	case "$line" in
-		"brunch-version")
+		"brunch-mac-version")
 			echo -e "$line":next:"$(cat /etc/brunch_version)"
 		;;
-		"latest-stable")
-			echo -e "$line":next:"$(curl -L -s "https://api.github.com/repos/sebanc/brunch/releases/latest" | grep '"name":' | head -1 | cut -d '"' -f 4)"
+		"latest")
+			echo -e "$line":next:"$(curl -L -s "https://api.github.com/repos/zprolegend007/brunch-mac/releases/latest" | grep '"name":' | head -1 | cut -d '"' -f 4)"
 		;;
-		"update-stable")
+		"update")
             if [ $(( ($(df -k --output=avail /mnt/stateful_partition/unencrypted | sed 1d) / 1024 / 1024) - 4 )) -lt 0 ]; then echo "Not enough space to update Brunch, 4Gb of free disk space is required but only $(( ($(df -k --output=avail /mnt/stateful_partition/unencrypted | sed 1d) / 1024 / 1024) ))Gb available."; continue; fi
 			echo -e 'Do not turn off your PC while the update is in progress.'
 			if [ -d /mnt/stateful_partition/unencrypted/brunch_pwa ]; then rm -r /mnt/stateful_partition/unencrypted/brunch_pwa; fi
 			mkdir /mnt/stateful_partition/unencrypted/brunch_pwa
 			echo -e "Downloading latest brunch stable."
-			curl -L -s -o /mnt/stateful_partition/unencrypted/brunch_pwa/brunch_update.tar.gz $(curl -L -s "https://api.github.com/repos/sebanc/brunch/releases/latest" | grep browser_download_url | tr -d '"' | sed 's#browser_download_url: ##g')
-			chromeos-update -f /mnt/stateful_partition/unencrypted/brunch_pwa/brunch_update.tar.gz
-			rm -r /mnt/stateful_partition/unencrypted/brunch_pwa
-			echo -e '<a href=javascript:reboot(); style=color:#ffffff;>Click here</a> to reboot your computer and finish the update.'
-		;;
-		"latest-unstable")
-			echo -e "$line":next:"$(curl -L -s "https://api.github.com/repos/sebanc/brunch-unstable/releases/latest" | grep '"name":' | head -1 | cut -d '"' -f 4)"
-		;;
-		"update-unstable")
-            if [ $(( ($(df -k --output=avail /mnt/stateful_partition/unencrypted | sed 1d) / 1024 / 1024) - 4 )) -lt 0 ]; then echo "Not enough space to update Brunch, 4Gb of free disk space is required but only $(( ($(df -k --output=avail /mnt/stateful_partition/unencrypted | sed 1d) / 1024 / 1024) ))Gb available."; continue; fi
-			echo -e 'Do not turn off your PC while the update is in progress.'
-			if [ -d /mnt/stateful_partition/unencrypted/brunch_pwa ]; then rm -r /mnt/stateful_partition/unencrypted/brunch_pwa; fi
-			mkdir /mnt/stateful_partition/unencrypted/brunch_pwa
-			echo -e "Downloading latest brunch unstable."
-			curl -L -s -o /mnt/stateful_partition/unencrypted/brunch_pwa/brunch_update.tar.gz $(curl -L -s "https://api.github.com/repos/sebanc/brunch-unstable/releases/latest" | grep browser_download_url | tr -d '"' | sed 's#browser_download_url: ##g')
+			curl -L -s -o /mnt/stateful_partition/unencrypted/brunch_pwa/brunch_update.tar.gz $(curl -L -s "https://api.github.com/repos/zprolegend007/brunch-mac/releases/latest" | grep browser_download_url | tr -d '"' | sed 's#browser_download_url: ##g')
 			chromeos-update -f /mnt/stateful_partition/unencrypted/brunch_pwa/brunch_update.tar.gz
 			rm -r /mnt/stateful_partition/unencrypted/brunch_pwa
 			echo -e '<a href=javascript:reboot(); style=color:#ffffff;>Click here</a> to reboot your computer and finish the update.'
