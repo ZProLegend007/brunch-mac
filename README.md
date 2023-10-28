@@ -8,7 +8,7 @@
 
 ## Install instructions
 
-This install guide assumes you already have Bootcamp or linux installed on your device.
+This install guide assumes you already have Windows Bootcamp or linux installed on your device.
 
 To install this fork please download the latest release and place it in a folder on your chosen OS (Other than MacOS). Then head to [this website](https://cros.tech/device/shyvana/) and download the latest chromeOS image, then also place that file in your folder. 
 
