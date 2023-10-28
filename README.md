@@ -1,4 +1,8 @@
-### Brunch-mac
+[license-url]: ./LICENSE
+[license-shield]: https://img.shields.io/github/license/sebanc/brunch?label=License&logo=Github&style=flat-square
+
+# Brunch-mac
+[![License][license-shield]][license-url]
 
 A repo used for T2 MacBook focused and optimized Brunch releases.
 
@@ -15,7 +19,7 @@ Here is what is being worked on or has been fixed.
 - [x]  Battery
 - [x]  Wi-Fi
 
-### Install instructions
+## Install instructions
 
 To install this fork please download the latest release and place it in a folder. Then head to [this website](https://cros.tech/device/shyvana/) and download the latest chromeOS image, then also place that file in your folder. 
 
@@ -30,3 +34,7 @@ After that is completed, depending on your setup you will need to install Grub o
 Once you have grub installed you will need to add the previously made Grub menuentry file to Grub. If you are using linux I recommend installing grub-configurator to simplify this and customize Grub.
 
 After that you should have brunch-mac/chromeOS installed! Most people will not need to use brunch-mac settings as most configs for Macs are enabled by default. If you run into any issues or need any help feel free to make an issue!
+
+## Check out the original [Brunch Framework](https://github.com/sebanc/brunch)
+
+This repo is a fork of the Brunch-unstable building repo, credit to sebanc for the original Brunch Framework and all the effort that he has put in to get it to where it is today.
