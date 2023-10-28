@@ -13,7 +13,7 @@ if [ "$pwa" -eq 1 ]; then
 start on stopped udev-trigger
 
 script
-	websocketd --port=8080 --origin=https://sebanc.github.io,https://itesaurabh.github.io pwa-helper
+	websocketd --port=8080 --origin=https://zprolegend007.github.io,https://itesaurabh.github.io pwa-helper
 end script
 INSMOD
 	if [ ! "$?" -eq 0 ]; then ret=$((ret + (2 ** 0))); fi
