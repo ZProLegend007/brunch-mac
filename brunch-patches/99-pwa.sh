@@ -29,15 +29,15 @@ do
 			echo -e "$line":next:"$(curl -L -s "https://api.github.com/repos/zprolegend007/brunch-mac/releases/latest" | grep '"name":' | head -1 | cut -d '"' -f 4)"
 		;;
 		"update")
-            if [ $(( ($(df -k --output=avail /mnt/stateful_partition/unencrypted | sed 1d) / 1024 / 1024) - 4 )) -lt 0 ]; then echo "Not enough space to update Brunch, 4Gb of free disk space is required but only $(( ($(df -k --output=avail /mnt/stateful_partition/unencrypted | sed 1d) / 1024 / 1024) ))Gb available."; continue; fi
-			echo -e 'Do not turn off your PC while the update is in progress.'
+            if [ $(( ($(df -k --output=avail /mnt/stateful_partition/unencrypted | sed 1d) / 1024 / 1024) - 4 )) -lt 0 ]; then echo "Not enough space to update Brunch-mac, 4Gb of free disk space is required but only $(( ($(df -k --output=avail /mnt/stateful_partition/unencrypted | sed 1d) / 1024 / 1024) ))Gb available."; continue; fi
+			echo -e 'Do not turn off your device while the update is in progress.'
 			if [ -d /mnt/stateful_partition/unencrypted/brunch_pwa ]; then rm -r /mnt/stateful_partition/unencrypted/brunch_pwa; fi
 			mkdir /mnt/stateful_partition/unencrypted/brunch_pwa
-			echo -e "Downloading latest brunch stable."
+			echo -e "Downloading latest brunch-mac stable."
 			curl -L -s -o /mnt/stateful_partition/unencrypted/brunch_pwa/brunch_update.tar.gz $(curl -L -s "https://api.github.com/repos/zprolegend007/brunch-mac/releases/latest" | grep browser_download_url | tr -d '"' | sed 's#browser_download_url: ##g')
 			chromeos-update -f /mnt/stateful_partition/unencrypted/brunch_pwa/brunch_update.tar.gz
 			rm -r /mnt/stateful_partition/unencrypted/brunch_pwa
-			echo -e '<a href=javascript:reboot(); style=color:#ffffff;>Click here</a> to reboot your computer and finish the update.'
+			echo -e '<a href=javascript:reboot(); style=color:#ffffff;>Click here</a> to reboot your device and finish the update.'
 		;;
 		"chromeos-version")
 			echo -e "$line":next:"$(cat /etc/lsb-release | grep CHROMEOS_RELEASE_BUILDER_PATH | cut -d'=' -f2 | cut -d'-' -f1) $(cat /etc/lsb-release | grep CHROMEOS_RELEASE_BUILDER_PATH | cut -d'/' -f2 | cut -d'-' -f1)"
@@ -53,11 +53,11 @@ do
 			echo -e "$line":next:"$recovery $version"
 		;;
 		"update-chromeos")
-			if [ $(( ($(df -k --output=avail /mnt/stateful_partition/unencrypted | sed 1d) / 1024 / 1024) - 8 )) -lt 0 ]; then echo "Not enough space to update ChromeOS, 8Gb of free disk space is required but only $(( ($(df -k --output=avail /mnt/stateful_partition/unencrypted | sed 1d) / 1024 / 1024) ))Gb available."; continue; fi
-			echo -e 'Do not turn off your PC while the update is in progress.'
+			if [ $(( ($(df -k --output=avail /mnt/stateful_partition/unencrypted | sed 1d) / 1024 / 1024) - 8 )) -lt 0 ]; then echo "Not enough space to update chromeOS, 8Gb of free disk space is required but only $(( ($(df -k --output=avail /mnt/stateful_partition/unencrypted | sed 1d) / 1024 / 1024) ))Gb available."; continue; fi
+			echo -e 'Do not turn off your device while the update is in progress.'
 			if [ -d /mnt/stateful_partition/unencrypted/brunch_pwa ]; then rm -r /mnt/stateful_partition/unencrypted/brunch_pwa; fi
 			mkdir /mnt/stateful_partition/unencrypted/brunch_pwa
-			echo -e "Downloading latest chromeos recovery image."
+			echo -e "Downloading latest chromeOS recovery image."
 			recovery="$(cat /etc/lsb-release | grep CHROMEOS_RELEASE_BOARD | cut -d'=' -f2 | cut -d'-' -f1)"
 			if [ "$recovery" == "reven" ]; then
 				recovery_file_url="https://dl.google.com/dl/edgedl/chromeos/recovery/cloudready_recovery.conf"
@@ -70,7 +70,7 @@ do
 			recovery=$(find /mnt/stateful_partition/unencrypted/brunch_pwa -type f -name "*.bin" | tail -1)
 			chromeos-update -r "$recovery"
 			rm -r /mnt/stateful_partition/unencrypted/brunch_pwa
-			echo -e '<a href=javascript:reboot(); style=color:#ffffff;>Click here</a> to reboot your computer and finish the update.'
+			echo -e '<a href=javascript:reboot(); style=color:#ffffff;>Click here</a> to reboot your device and finish the update.'
 		;;
 		"install-toolchain")
 			if [ -d /mnt/stateful_partition/unencrypted/brunch_pwa ]; then rm -r /mnt/stateful_partition/unencrypted/brunch_pwa; fi
