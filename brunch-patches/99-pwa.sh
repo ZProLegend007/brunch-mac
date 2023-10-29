@@ -31,12 +31,16 @@ do
 		"update")
             if [ $(( ($(df -k --output=avail /mnt/stateful_partition/unencrypted | sed 1d) / 1024 / 1024) - 4 )) -lt 0 ]; then echo "Not enough space to update Brunch-mac, 4Gb of free disk space is required but only $(( ($(df -k --output=avail /mnt/stateful_partition/unencrypted | sed 1d) / 1024 / 1024) ))Gb available."; continue; fi
 			echo -e 'Do not turn off your device while the update is in progress.'
+   			echo -e "This may take a while, please be patient. :)"
 			if [ -d /mnt/stateful_partition/unencrypted/brunch_pwa ]; then rm -r /mnt/stateful_partition/unencrypted/brunch_pwa; fi
 			mkdir /mnt/stateful_partition/unencrypted/brunch_pwa
-			echo -e "Downloading latest brunch-mac stable."
+			echo -e "Downloading the latest brunch-mac release..."
 			curl -L -s -o /mnt/stateful_partition/unencrypted/brunch_pwa/brunch_update.tar.gz $(curl -L -s "https://api.github.com/repos/zprolegend007/brunch-mac/releases/latest" | grep browser_download_url | tr -d '"' | sed 's#browser_download_url: ##g')
-			chromeos-update -f /mnt/stateful_partition/unencrypted/brunch_pwa/brunch_update.tar.gz
+			echo -e "Installing latest brunch-mac release..."
+   			chromeos-update -f /mnt/stateful_partition/unencrypted/brunch_pwa/brunch_update.tar.gz
+      			echo -e "Cleaning up..."
 			rm -r /mnt/stateful_partition/unencrypted/brunch_pwa
+   			echo -e "You will need to reboot to finish the update, this will rebuild the rootfs. Don't worry, this is normal :)"
 			echo -e '<a href=javascript:reboot(); style=color:#ffffff;>Click here</a> to reboot your device and finish the update.'
 		;;
 		"chromeos-version")
@@ -57,7 +61,8 @@ do
 			echo -e 'Do not turn off your device while the update is in progress.'
 			if [ -d /mnt/stateful_partition/unencrypted/brunch_pwa ]; then rm -r /mnt/stateful_partition/unencrypted/brunch_pwa; fi
 			mkdir /mnt/stateful_partition/unencrypted/brunch_pwa
-			echo -e "Downloading latest chromeOS recovery image."
+			echo -e "This may take a while, please be patient. :)"
+   			echo -e "Downloading new chromeOS image..."
 			recovery="$(cat /etc/lsb-release | grep CHROMEOS_RELEASE_BOARD | cut -d'=' -f2 | cut -d'-' -f1)"
 			if [ "$recovery" == "reven" ]; then
 				recovery_file_url="https://dl.google.com/dl/edgedl/chromeos/recovery/cloudready_recovery.conf"
@@ -65,11 +70,16 @@ do
 				recovery_file_url="https://dl.google.com/dl/edgedl/chromeos/recovery/recovery.conf"
 			fi
 			curl -L -s -o /mnt/stateful_partition/unencrypted/brunch_pwa/recovery_image.zip $(curl -L -s $recovery_file_url | grep .bin.zip | cut -d'=' -f2 | grep $(cat /etc/lsb-release | grep CHROMEOS_RELEASE_BOARD | cut -d'=' -f2 | cut -d'-' -f1) | sort -n | tail -1)
-			bsdtar -xf /mnt/stateful_partition/unencrypted/brunch_pwa/recovery_image.zip -C /mnt/stateful_partition/unencrypted/brunch_pwa
+			echo -e "Unpacking new chromeOS image..."
+   			bsdtar -xf /mnt/stateful_partition/unencrypted/brunch_pwa/recovery_image.zip -C /mnt/stateful_partition/unencrypted/brunch_pwa
+      			echo -e "Removing old chromeOS image..."
 			rm /mnt/stateful_partition/unencrypted/brunch_pwa/recovery_image.zip
 			recovery=$(find /mnt/stateful_partition/unencrypted/brunch_pwa -type f -name "*.bin" | tail -1)
+   			echo -e "Installing new chromeOS image..."
 			chromeos-update -r "$recovery"
+   			echo -e "Cleaning up..."
 			rm -r /mnt/stateful_partition/unencrypted/brunch_pwa
+   			echo -e "You will need to reboot to finish the update, this will rebuild the rootfs. Don't worry, this is normal :)"
 			echo -e '<a href=javascript:reboot(); style=color:#ffffff;>Click here</a> to reboot your device and finish the update.'
 		;;
 		"install-toolchain")
