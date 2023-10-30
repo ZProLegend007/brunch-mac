@@ -2,7 +2,7 @@
 [license-shield]: https://img.shields.io/github/license/sebanc/brunch?label=License&logo=Github&style=flat-square
 
 <h1 align="center">Brunch-mac Framework</h1>
-<h3 align="center">A fork of the Brunch Framework focused on optimization for T2 Macs</h3>
+<h3 align="center">A fork of the Brunch Framework focused on compatibility and optimization for T2 Macs</h3>
 
 [![License][license-shield]][license-url]
 
