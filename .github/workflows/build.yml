@@ -141,7 +141,7 @@ jobs:
             NEW_DECIMAL=$((CURRENT_DECIMAL + 1))
             RELEASE_VERSION="r${MAJOR_VERSION}.${NEW_DECIMAL}"
           else
-            RELEASE_VERSION="r${MAJOR_VERSION}.1"
+            RELEASE_VERSION="r${MAJOR_VERSION}"
           fi
           NEW_RELEASE_NAME="Brunch-mac ${RELEASE_VERSION}"
           NEW_RELEASE_FILE="brunch-mac_${RELEASE_VERSION}.tar.gz"
