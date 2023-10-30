@@ -134,7 +134,7 @@ jobs:
       - name: Generate release details
         run: |
           RELEASE_FILE=$(ls brunch_r*.tar.gz)
-          RELEASE_VERSION=$(echo "$RELEASE_FILE" | cut -d' ' -f2)
+          RELEASE_VERSION=$(echo "$RELEASE_FILE" | sed 's/[^0-9.]//g')
           MAJOR_VERSION=$(cut -c 2- <<< "$RELEASE_VERSION")
           if git rev-parse -q --verify "refs/tags/r${MAJOR_VERSION}" > /dev/null; then
             CURRENT_DECIMAL=$(cut -d'.' -f2 <<< "$RELEASE_VERSION")
