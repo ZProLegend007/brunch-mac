@@ -27,7 +27,7 @@ if [ ! "$?" -eq 0 ]; then ret=$((ret + (2 ** 1))); fi
 echo 1 > /roota/usr/share/power_manager/board_specific/has_keyboard_backlight
 if [ ! "$?" -eq 0 ]; then ret=$((ret + (2 ** 2))); fi
 
-echo 1 > /roota/usr/share/power_manager/board_specific/multiple_batteries
+echo 0 > /roota/usr/share/power_manager/board_specific/multiple_batteries
 if [ ! "$?" -eq 0 ]; then ret=$((ret + (2 ** 3))); fi
 
 echo 4 > /roota/usr/share/power_manager/board_specific/low_battery_shutdown_percent
@@ -54,9 +54,9 @@ do
 25.00 25.00 600 3000
 32.00 32.00 2050 6000
 42.00 42.00 5000 10500
-55.00 55.00 8000 16000
-65.00 65.00 14500 28000
-72.00 75.00 20000 38000
+52.00 55.00 8000 16000
+62.00 65.00 14500 28000
+70.00 75.00 20000 38000
 85.00 85.00 30000 58000
 100.0 100.0 52500 -1
 ALS
