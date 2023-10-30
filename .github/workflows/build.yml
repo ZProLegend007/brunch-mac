@@ -83,7 +83,7 @@ jobs:
           path: /tmp/built-kernel-${{ matrix.kernel }}.tar.gz
           if-no-files-found: error
   build-brunch:
-    name: Build Brunch
+    name: Build Brunch-mac
     needs: build-kernels
     runs-on: ubuntu-22.04
     steps:
