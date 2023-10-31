@@ -127,6 +127,8 @@ jobs:
     needs: build-brunch
     runs-on: ubuntu-22.04
     steps:
+      - name: Initialize Git repository
+        run: git init  # Add this step to initialize Git
       - name: Download built artifacts
         uses: actions/download-artifact@v3
         with:
