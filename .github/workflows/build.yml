@@ -134,12 +134,22 @@ jobs:
       - name: Generate release details
         run: |
           RELEASE_FILE=$(ls brunch_r*.tar.gz)
-          MAJOR_VERSION=$(cut -d'_' -f2 <<< "$RELEASE_FILE")
-          LAST_DECIMAL=$(cut -d'.' -f2 <<< "$RELEASE_FILE")
-          NEW_DECIMAL=$((LAST_DECIMAL + 1))
-          RELEASE_VERSION="${MAJOR_VERSION}.${NEW_DECIMAL}"
+          RELEASE_VERSION=$(echo "$RELEASE_FILE" | sed 's/[^0-9.]//g')
+          MAJOR_VERSION=$(cut -c 2- <<< "$RELEASE_VERSION")
+          # Check if the major version tag already exists
+          if git rev-parse -q --verify "refs/tags/r${MAJOR_VERSION}" > /dev/null; then
+            # If it exists, it's not the first release of this major version
+            # Determine the last decimal number used for this major version
+            LAST_RELEASE_TAG=$(git for-each-ref --sort=-taggerdate --format '%(refname:short)' "refs/tags/r${MAJOR_VERSION}.*" | head -n 1)
+            LAST_DECIMAL=$(cut -d. -f3 <<< "$LAST_RELEASE_TAG")
+            NEW_DECIMAL=$((LAST_DECIMAL + 1))
+            RELEASE_VERSION="r${MAJOR_VERSION}.${NEW_DECIMAL}"
+          else
+            # If it's the first release of this major version, set it to "rX" (no decimal)
+            RELEASE_VERSION="r${MAJOR_VERSION}"
+          fi
           NEW_RELEASE_NAME="Brunch-mac ${RELEASE_VERSION}"
-          NEW_RELEASE_FILE="brunch-mac_${RELEASE_VERSION}.tar.gz"
+          NEW_RELEASE_FILE="Brunch-mac_${RELEASE_VERSION}.tar.gz"
           echo "Found brunch release: ${RELEASE_FILE} with version ${RELEASE_VERSION}"
           echo "Renaming release file to: $NEW_RELEASE_FILE"
           mv "$RELEASE_FILE" "$NEW_RELEASE_FILE"
