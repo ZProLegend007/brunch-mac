@@ -42,7 +42,7 @@ do
 			rm -r /mnt/stateful_partition/unencrypted/brunch_pwa
    			echo -e "You will need to reboot to finish the update, this will rebuild the rootfs. Don't worry, this is normal :)"
 			echo -e '<a href=javascript:reboot(); style=color:#ffffff;>Click here</a> to reboot your device.'
-   			echo -e 'javascript:simulateUpdateCompletion()'
+   			echo -e 'NTriggerwoohoo'
 		;;
 		"chromeos-version")
 			echo -e "$line":next:"$(cat /etc/lsb-release | grep CHROMEOS_RELEASE_BUILDER_PATH | cut -d'=' -f2 | cut -d'-' -f1) $(cat /etc/lsb-release | grep CHROMEOS_RELEASE_BUILDER_PATH | cut -d'/' -f2 | cut -d'-' -f1)"
@@ -82,7 +82,7 @@ do
 			rm -r /mnt/stateful_partition/unencrypted/brunch_pwa
    			echo -e "You will need to reboot to finish the update, this will rebuild the rootfs. Don't worry, this is normal :)"
 			echo -e '<a href=javascript:reboot(); style=color:#ffffff;>Click here</a> to reboot your device.'
-      			echo -e 'javascript:simulateUpdateCompletion()'
+      			echo -e 'NTriggerwoohoo'
 		;;
 		"install-toolchain")
 			if [ -d /mnt/stateful_partition/unencrypted/brunch_pwa ]; then rm -r /mnt/stateful_partition/unencrypted/brunch_pwa; fi
