@@ -149,7 +149,7 @@ jobs:
               RELEASE_VERSION="${MAJOR_VERSION}.${NEW_DECIMAL}"
           else
               # If it's the first release of this major version, set it to "rX" (no decimal)
-              RELEASE_VERSION="${MAJOR_VERSION}"
+              RELEASE_VERSION="${MAJOR_VERSION}.0"
           fi
 
           NEW_RELEASE_NAME="Brunch-mac ${RELEASE_VERSION}"
