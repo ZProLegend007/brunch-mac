@@ -134,13 +134,10 @@ jobs:
       - name: Generate release details
         run: |
           RELEASE_FILE=$(ls brunch_r*.tar.gz)
-          # Extract the major version from the release file format
           MAJOR_VERSION=$(cut -d'_' -f2 <<< "$RELEASE_FILE")
-          # Extract the last decimal from the release file format
           LAST_DECIMAL=$(cut -d'.' -f2 <<< "$RELEASE_FILE")
-          # Calculate the next decimal for the release version
           NEW_DECIMAL=$((LAST_DECIMAL + 1))
-          RELEASE_VERSION="r${MAJOR_VERSION}.${NEW_DECIMAL}"
+          RELEASE_VERSION="${MAJOR_VERSION}.${NEW_DECIMAL}"
           NEW_RELEASE_NAME="Brunch-mac ${RELEASE_VERSION}"
           NEW_RELEASE_FILE="brunch-mac_${RELEASE_VERSION}.tar.gz"
           echo "Found brunch release: ${RELEASE_FILE} with version ${RELEASE_VERSION}"
