@@ -1,13 +1,16 @@
 name: Build Brunch-mac using Github Actions
+
 on:
   workflow_dispatch:
     branches:
       - 'Live'
     paths-ignore:
       - 'README.md'
+
 concurrency:
   group: environment-${{ github.ref }}
   cancel-in-progress: true
+
 jobs:
   prepare-kernels:
     name: Prepare Kernels
@@ -36,6 +39,7 @@ jobs:
           name: kernels-source
           path: /tmp/kernels-source.tar.gz
           if-no-files-found: error
+
   build-kernels:
     name: Build Kernels
     needs: prepare-kernels
@@ -82,6 +86,7 @@ jobs:
           name: built-kernel-${{ matrix.kernel }}
           path: /tmp/built-kernel-${{ matrix.kernel }}.tar.gz
           if-no-files-found: error
+
   build-brunch:
     name: Build Brunch-mac
     needs: build-kernels
@@ -120,6 +125,7 @@ jobs:
           name: brunch-build
           path: out/brunch_r*.tar.gz
           if-no-files-found: error
+
   release:
     name: Make a Brunch-mac release
     permissions:
@@ -129,26 +135,32 @@ jobs:
     steps:
       - name: Initialize Git repository
         run: git init  # Add this step to initialize Git
+
+      - name: Get latest tag
+        id: latest-tag
+        run: |
+          LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+          echo "Latest tag is $LATEST_TAG"
+          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+        shell: bash
       - name: Download built artifacts
         uses: actions/download-artifact@v3
         with:
           name: brunch-build
       - name: Generate release details
         run: |
-          REPO_PATH="${{ github.workspace }}"
           RELEASE_FILE=$(ls brunch_r*.tar.gz)
           RELEASE_VERSION=$(echo "$RELEASE_FILE" | sed -n 's/brunch_r\([0-9]*\).*/\1/p')
           MAJOR_VERSION="r${RELEASE_VERSION}"
-          pwd
-          ls -la "$REPO_PATH/refs/tags"
-          if git -C "$REPO_PATH" rev-parse -q --verify "refs/tags/${MAJOR_VERSION}" > /dev/null; then
-              LAST_RELEASE_TAG=$(git for-each-ref --sort=-taggerdate --format '%(refname:short)' "refs/tags/${MAJOR_VERSION}.*" | head -n 1)
-              LAST_DECIMAL=$(cut -d. -f2 <<< "$LAST_RELEASE_TAG")
-              NEW_DECIMAL=$((LAST_DECIMAL + 1))
-              RELEASE_VERSION="${MAJOR_VERSION}.${NEW_DECIMAL}"
+          LATEST_TAG="${{ env.LATEST_TAG }}"
+          if [ "${MAJOR_VERSION}.*" = "$LATEST_TAG" ]; then
+            LAST_RELEASE_TAG="$LATEST_TAG"
+            LAST_DECIMAL=$(cut -d. -f2 <<< "$LAST_RELEASE_TAG")
+            NEW_DECIMAL=$((LAST_DECIMAL + 1))
           else
-              RELEASE_VERSION="${MAJOR_VERSION}.0"
+            NEW_DECIMAL="0"
           fi
+          RELEASE_VERSION="${MAJOR_VERSION}.${NEW_DECIMAL}"
           NEW_RELEASE_NAME="Brunch-mac ${RELEASE_VERSION}"
           NEW_RELEASE_FILE="Brunch-mac_${RELEASE_VERSION}.tar.gz"
           echo "Found brunch release: ${RELEASE_FILE} with version ${RELEASE_VERSION}"
