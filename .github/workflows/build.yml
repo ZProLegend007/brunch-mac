@@ -135,11 +135,14 @@ jobs:
     steps:
       - name: Initialize Git repository
         run: git init  # Add this step to initialize Git
-
+      - name: Install dependencies
+        run: |
+          yes | DEBIAN_FRONTEND=noninteractive sudo apt update
+          yes | DEBIAN_FRONTEND=noninteractive sudo apt install jq
       - name: Get latest tag
         id: latest-tag
         run: |
-          LATEST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))
+          LATEST_TAG=$(curl -s "https://api.github.com/repos/ZProLegend007/brunch-mac/releases/latest" | jq -r .tag_name)
           echo "Latest tag is $LATEST_TAG"
           echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
         shell: bash
