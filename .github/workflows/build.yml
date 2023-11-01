@@ -135,10 +135,11 @@ jobs:
           name: brunch-build
       - name: Generate release details
         run: |
+          REPO_PATH="${{ github.workspace }}"
           RELEASE_FILE=$(ls brunch_r*.tar.gz)
           RELEASE_VERSION=$(echo "$RELEASE_FILE" | sed -n 's/brunch_r\([0-9]*\).*/\1/p')
           MAJOR_VERSION="r${RELEASE_VERSION}"
-          if git rev-parse -q --verify "refs/tags/${MAJOR_VERSION}" > /dev/null 2>&1; then
+          if git -C "$REPO_PATH" rev-parse -q --verify "refs/tags/${MAJOR_VERSION}" > /dev/null; then
               LAST_RELEASE_TAG=$(git for-each-ref --sort=-taggerdate --format '%(refname:short)' "refs/tags/${MAJOR_VERSION}.*" | head -n 1)
               LAST_DECIMAL=$(cut -d. -f2 <<< "$LAST_RELEASE_TAG")
               NEW_DECIMAL=$((LAST_DECIMAL + 1))
