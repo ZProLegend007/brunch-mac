@@ -1,0 +1,7 @@
+files
+*.debhelper
+*.substvars
+*stamp
+*.log
+rtw89-dkms/
+rtw89-firmware/
