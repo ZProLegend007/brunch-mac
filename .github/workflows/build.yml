@@ -139,6 +139,8 @@ jobs:
           RELEASE_FILE=$(ls brunch_r*.tar.gz)
           RELEASE_VERSION=$(echo "$RELEASE_FILE" | sed -n 's/brunch_r\([0-9]*\).*/\1/p')
           MAJOR_VERSION="r${RELEASE_VERSION}"
+          pwd
+          ls -la "$REPO_PATH/refs/tags"
           if git -C "$REPO_PATH" rev-parse -q --verify "refs/tags/${MAJOR_VERSION}" > /dev/null; then
               LAST_RELEASE_TAG=$(git for-each-ref --sort=-taggerdate --format '%(refname:short)' "refs/tags/${MAJOR_VERSION}.*" | head -n 1)
               LAST_DECIMAL=$(cut -d. -f2 <<< "$LAST_RELEASE_TAG")
