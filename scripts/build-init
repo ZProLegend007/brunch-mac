@@ -34,7 +34,7 @@ if [ ! -f /lib64/libnsl.so.2 ]; then sudo ln -s libnsl.so.1 /lib64/libnsl.so.2; 
 yes | perl -MCPAN -e 'install Autom4te::ChannelDefs'
 
 mkdir -p ./version-pkg/etc || { echo "Failed to make the brunch version package"; exit 1; }
-echo "Brunch $version $(date +"%Y%m%d")" > ./version-pkg/etc/brunch_version || { echo "Failed to make the brunch version package"; exit 1; }
+echo "Brunch-mac $version" > ./version-pkg/etc/brunch_version || { echo "Failed to make the brunch version package"; exit 1; }
 cd ./version-pkg || { echo "Failed to make the brunch version package"; exit 1; }
 tar zcvf ../rootc/packages/version.tar.gz * --owner=0 --group=0 || { echo "Failed to make the brunch version package"; exit 1; }
 cd .. || { echo "Failed to make the brunch version package"; exit 1; }
