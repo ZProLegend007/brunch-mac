@@ -156,7 +156,8 @@ jobs:
           RELEASE_VERSION=$(echo "$RELEASE_FILE" | sed -n 's/brunch_r\([0-9]*\).*/\1/p')
           MAJOR_VERSION="r${RELEASE_VERSION}"
           LATEST_TAG="${{ env.LATEST_TAG }}"
-          if [ "$LATEST_TAG" == "${MAJOR_VERSION}"* ]; then
+          LATEST_MAJOR_VERSION="${LATEST_TAG%%.*}"
+          if [ "$LATEST_MAJOR_VERSION" == "${MAJOR_VERSION}" ]; then
             LAST_RELEASE_TAG="$LATEST_TAG"
             LAST_DECIMAL=$(cut -d. -f2 <<< "$LAST_RELEASE_TAG")
             NEW_DECIMAL=$((LAST_DECIMAL + 1))
