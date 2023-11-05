@@ -24,9 +24,9 @@ Once you have grub installed you will need to add the previously made Grub menue
 
 ## Updating and Settings
 
-Most people will not need to use brunch-mac settings as most configs for Macs are enabled by default. But if you are having any issues or want to change some extra setttings you should check it out. 
+### Make sure you add [this PWA](https://zprolegend007.github.io/brunch-mac-pwa/) so you can update brunch-mac.
 
-Make sure you add [this PWA](https://zprolegend007.github.io/brunch-mac-pwa/) so you can update brunch-mac.
+Most people will not need to use brunch-mac settings as most configs for Macs are enabled by default. But if you are having any issues or want to change some extra setttings you should check it out. 
 
 ## Help and Issues
 
