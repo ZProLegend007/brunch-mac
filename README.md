@@ -1,12 +1,14 @@
 [license-url]: ./LICENSE
 [license-shield]: https://img.shields.io/github/license/sebanc/brunch?label=License&logo=Github&style=flat-square
 
-<h1 align="center">Brunch-mac Framework</h1>
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Trebuchet+MS&weight=100&size=45&duration=6000&color=F7F7F7&center=true&vCenter=true&repeat=false&random=false&width=1000&lines=Brunch-mac+Framework" alt="Typing SVG" /></a>
 <h4 align="center">A fork of the Brunch Framework focused on compatibility and optimization for T2 Macs</h4>
 
 [![License][license-shield]][license-url]
 
-## Install Instructions
+<hr>
+
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Trebuchet+MS&weight=100&size=24&duration=7000&color=A0ECF7&vCenter=true&repeat=false&random=false&width=300&lines=Install+instructions" alt="Typing SVG" /></a>
 
 This install guide assumes you already have Windows Bootcamp or linux installed on your device.
 
@@ -22,16 +24,22 @@ After that is completed, depending on your setup you will need to install Grub o
 
 Once you have grub installed you will need to add the previously made Grub menuentry file to Grub. If you are using linux I recommend installing grub-configurator to simplify this and customize Grub. After that you should have brunch-mac/chromeOS installed! 
 
-## Updating and Settings
+<hr>
+
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Trebuchet+MS&weight=100&size=24&duration=7500&color=A0ECF7&vCenter=true&repeat=false&random=false&width=300&lines=Updating+and+Settings" alt="Typing SVG" /></a>
 
 ### Make sure you add [this PWA](https://zprolegend007.github.io/brunch-mac-pwa/) so you can update brunch-mac.
 
 Most people will not need to use brunch-mac settings as most configs for Macs are enabled by default. But if you are having any issues or want to change some extra setttings you should check it out. 
 
-## Help and Issues
+<hr>
+
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Trebuchet+MS&weight=100&size=24&duration=8000&color=A0ECF7&vCenter=true&repeat=false&random=false&width=300&lines=Help+and+Issues" alt="Typing SVG" /></a>
 
 If you run into any problems, issues or need any help feel free to make an issue and I'll make sure to help out as soon as I can!
 
-## Check out the original [Brunch Framework](https://github.com/sebanc/brunch)
+<hr>
+
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Trebuchet+MS&weight=100&size=24&duration=9000&color=A0ECF7&vCenter=true&repeat=false&random=false&width=600&lines=Check+out+the+original+Brunch+Framework+(click+me))](https://github.com/sebanc/brunch)
 
 This repo is a fork of the [brunch-unstable](https://github.com/sebanc/brunch-unstable) building repo, credit to sebanc for the original Brunch Framework and all the effort that he has put in to get it to where it is today. For more information on this project, check out his repo.
