@@ -175,7 +175,7 @@ jobs:
           echo "Renaming release file to: $NEW_RELEASE_FILE"
           mv "$RELEASE_FILE" "$NEW_RELEASE_FILE"
           echo "RELEASE_NAME=${NEW_RELEASE_NAME}" >> $GITHUB_ENV
-          echo "RELEASE_TAG=${RELEASE_VERSION} - Unstable" >> $GITHUB_ENV
+          echo "RELEASE_TAG=${RELEASE_VERSION}-Unstable" >> $GITHUB_ENV
           echo "RELEASE_FILE=${NEW_RELEASE_FILE}" >> $GITHUB_ENV
         id: generate-release-details
       - name: Create a release and upload artifacts as assets
