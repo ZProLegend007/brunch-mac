@@ -1,17 +1,9 @@
-<<<<<<<< HEAD:.github/workflows/build-testing-5.4.yml
-name: (5.4) Build Testing Brunch-mac using Github Actions
-========
-name: (6.1) Build Unstable Brunch-mac using Github Actions
->>>>>>>> Testing-5.10:.github/workflows/build-unstable.yml
+name: (5.10) Build Testing Brunch-mac using Github Actions
 
 on:
   workflow_dispatch:
     branches:
-<<<<<<<< HEAD:.github/workflows/build-testing-5.4.yml
-      - 'Testing-5.4'
-========
-      - 'Live-6.1'
->>>>>>>> Testing-5.10:.github/workflows/build-unstable.yml
+      - 'Testing-5.10'
     paths-ignore:
       - 'README.md'
 
