@@ -1,9 +1,9 @@
-name: (5.4) Build Testing Brunch-mac using Github Actions
+name: (5.15) Build Testing Brunch-mac using Github Actions
 
 on:
   workflow_dispatch:
     branches:
-      - 'Testing-5.4'
+      - 'Testing-5.15'
     paths-ignore:
       - 'README.md'
 
