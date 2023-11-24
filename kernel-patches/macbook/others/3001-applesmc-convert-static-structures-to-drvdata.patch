@@ -323,7 +323,7 @@ index 79b498f816fe..62211b590a61 100644
  {
 -	struct applesmc_registers *s = &smcreg;
 +	struct applesmc_registers *s = &smc->reg;
- 	bool left_light_sensor = 0, right_light_sensor = 0;
+ 	bool left_light_sensor = false, right_light_sensor = false;
  	unsigned int count;
  	u8 tmp[1];
 @@ -590,35 +606,35 @@ static int applesmc_init_smcreg_try(void)
@@ -600,7 +600,7 @@ index 79b498f816fe..62211b590a61 100644
 +	struct applesmc_device *smc = dev_get_drvdata(dev);
 +	const char *key = smc->reg.index[to_index(devattr)];
  
- 	return snprintf(sysfsbuf, PAGE_SIZE, "%s\n", key);
+ 	return sysfs_emit(sysfsbuf, "%s\n", key);
  }
 @@ -821,12 +885,13 @@ static ssize_t applesmc_show_sensor_label(struct device *dev,
  static ssize_t applesmc_show_temperature(struct device *dev,
@@ -712,10 +712,10 @@ index 79b498f816fe..62211b590a61 100644
  static ssize_t applesmc_calibrate_show(struct device *dev,
  				struct device_attribute *attr, char *sysfsbuf)
  {
--	return snprintf(sysfsbuf, PAGE_SIZE, "(%d,%d)\n", rest_x, rest_y);
+-	return sysfs_emit(sysfsbuf, "(%d,%d)\n", rest_x, rest_y);
 +	struct applesmc_device *smc = dev_get_drvdata(dev);
 +
-+	return snprintf(sysfsbuf, PAGE_SIZE, "(%d,%d)\n", smc->rest_x, smc->rest_y);
++	return sysfs_emit(sysfsbuf, "(%d,%d)\n", smc->rest_x, smc->rest_y);
  }
  
  static ssize_t applesmc_calibrate_store(struct device *dev,
@@ -822,10 +822,10 @@ index 79b498f816fe..62211b590a61 100644
  static ssize_t applesmc_key_at_index_show(struct device *dev,
  				struct device_attribute *attr, char *sysfsbuf)
  {
--	return snprintf(sysfsbuf, PAGE_SIZE, "%d\n", key_at_index);
+-	return sysfs_emit(sysfsbuf, "%d\n", key_at_index);
 +	struct applesmc_device *smc = dev_get_drvdata(dev);
 +
-+	return snprintf(sysfsbuf, PAGE_SIZE, "%d\n", smc->key_at_index);
++	return sysfs_emit(sysfsbuf, PAGE_SIZE, "%d\n", smc->key_at_index);
  }
  
  static ssize_t applesmc_key_at_index_store(struct device *dev,

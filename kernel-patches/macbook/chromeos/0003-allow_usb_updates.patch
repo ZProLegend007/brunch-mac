@@ -2,14 +2,14 @@ diff -ruN a/block/genhd.c b/block/genhd.c
 --- a/block/genhd.c	2019-06-23 09:02:58.000000000 +0200
 +++ b/block/genhd.c	2019-06-23 15:15:31.963451019 +0200
 @@ -37,6 +37,8 @@
- 
  #include "blk.h"
+ #include "blk-rq-qos.h"
  
 +static int fake_removable = -1;
 +
- static DEFINE_MUTEX(block_class_lock);
  static struct kobject *block_depr;
  
+ /*
 @@ -1080,10 +1081,28 @@
  {
  	struct gendisk *disk = dev_to_disk(dev);

@@ -15,7 +15,7 @@ diff -uN a/drivers/hid/hid-sensor-hub.c b/drivers/hid/hid-sensor-hub.c
 diff -ruN a/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c b/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c
 --- a/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c	1970-01-01 01:00:00.000000000 +0100
 +++ b/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c	2020-03-19 15:35:32.105606158 +0100
-@@ -0,0 +1,1001 @@
+@@ -0,0 +1,979 @@
 +/*
 + * This program is free software; you can redistribute it and/or modify it
 + * under the terms and conditions of the GNU General Public License,
@@ -134,7 +134,7 @@ diff -ruN a/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c b/drivers/ii
 +					const struct iio_chan_spec *chan,
 +					char *buf)
 +{
-+	return sprintf(buf, "%d\n", indio_dev->id);
++	return sprintf(buf, "%d\n", iio_device_id(indio_dev));
 +}
 +
 +static ssize_t cros_compat_location(struct iio_dev *indio_dev,
@@ -428,17 +428,6 @@ diff -ruN a/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c b/drivers/ii
 +	als_scale_factor_post_decml = (((st->scale_pre_decml * (s64)1000000000 + st->scale_post_decml) - (als_scale_factor_pre_decml * (s64)1000000000)) * ((s64)1000000000 / (s64)1000000000));
 +	st->scale_pre_decml = 1;
 +	st->scale_post_decml = 0;
-+
-+	if (st->common_attributes.sensitivity.index < 0) {
-+		sensor_hub_input_get_attribute_info(hsdev,
-+			HID_FEATURE_REPORT, usage_id,
-+			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
-+			HID_USAGE_SENSOR_DATA_LIGHT,
-+			&st->common_attributes.sensitivity);
-+		dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
-+			st->common_attributes.sensitivity.index,
-+			st->common_attributes.sensitivity.report_id);
-+	}
 +	
 +	return ret;
 +}
@@ -448,7 +437,7 @@ diff -ruN a/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c b/drivers/ii
 +	int ret = 0;
 +	struct iio_dev *indio_dev;
 +	struct als_state *als_state;
-+	struct iio_buffer *buffer;
++	static const u32 als_sensitivity_addresses[] = { HID_USAGE_SENSOR_LIGHT_ILLUM, };
 +	
 +	struct hid_sensor_hub_device *hsdev = pdev->dev.platform_data;
 +
@@ -461,8 +450,7 @@ diff -ruN a/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c b/drivers/ii
 +	als_state->common_attributes.hsdev = hsdev;
 +	als_state->common_attributes.pdev = pdev;
 +
-+	ret = hid_sensor_parse_common_attributes(hsdev, HID_USAGE_SENSOR_ALS,
-+					&als_state->common_attributes);
++	ret = hid_sensor_parse_common_attributes(hsdev, HID_USAGE_SENSOR_ALS, &als_state->common_attributes, als_sensitivity_addresses,	ARRAY_SIZE(als_sensitivity_addresses));
 +	if (ret) {
 +		dev_err(&pdev->dev, "failed to setup common attributes\n");
 +		return ret;
@@ -486,16 +474,16 @@ diff -ruN a/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c b/drivers/ii
 +	indio_dev->dev.parent = &pdev->dev;
 +	indio_dev->info = &als_info;
 +	indio_dev->name = "cros-ec-light";
-+	indio_dev->modes = INDIO_BUFFER_SOFTWARE;
++	//indio_dev->modes = INDIO_BUFFER_SOFTWARE;
 +
 +	iio_device_set_clock(indio_dev, CLOCK_BOOTTIME);
 +
-+	buffer = devm_iio_kfifo_allocate(&pdev->dev);
-+	if (!buffer)
-+		return -ENOMEM;
-+	
-+	iio_device_attach_buffer(indio_dev, buffer);
-+	iio_buffer_set_attrs(indio_dev->buffer, cros_compat_attributes);
++	ret = devm_iio_kfifo_buffer_setup_ext(&pdev->dev, indio_dev, INDIO_BUFFER_SOFTWARE, NULL, cros_compat_attributes);
++	if (ret) {
++		dev_err(&pdev->dev, "failed to setup kfifo buffer\n");
++		goto error_free_dev_mem;
++	}
++
 +	atomic_set(&als_state->common_attributes.data_ready, 0);
 +	iio_device_set_drvdata(indio_dev, &als_state->common_attributes);
 +
@@ -817,17 +805,6 @@ diff -ruN a/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c b/drivers/ii
 +	st->scale_pre_decml = 0;
 +	st->scale_post_decml = 980665;
 +
-+	if (st->common_attributes.sensitivity.index < 0) {
-+		sensor_hub_input_get_attribute_info(hsdev,
-+			HID_FEATURE_REPORT, usage_id,
-+			HID_USAGE_SENSOR_DATA_MOD_CHANGE_SENSITIVITY_ABS |
-+			HID_USAGE_SENSOR_DATA_ACCELERATION,
-+			&st->common_attributes.sensitivity);
-+		dev_dbg(&pdev->dev, "Sensitivity index:report %d:%d\n",
-+			st->common_attributes.sensitivity.index,
-+			st->common_attributes.sensitivity.report_id);
-+	}
-+
 +	return ret;
 +}
 +
@@ -836,7 +813,7 @@ diff -ruN a/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c b/drivers/ii
 +	int ret = 0;
 +	struct iio_dev *indio_dev;
 +	struct accel_3d_state *accel_state;
-+	struct iio_buffer *buffer;
++	static const u32 accel_3d_sensitivity_addresses[] = { HID_USAGE_SENSOR_DATA_ACCELERATION, };
 +
 +	struct hid_sensor_hub_device *hsdev = pdev->dev.platform_data;
 +
@@ -851,8 +828,7 @@ diff -ruN a/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c b/drivers/ii
 +	accel_state->common_attributes.hsdev = hsdev;
 +	accel_state->common_attributes.pdev = pdev;
 +
-+	ret = hid_sensor_parse_common_attributes(hsdev, hsdev->usage,
-+					&accel_state->common_attributes);
++	ret = hid_sensor_parse_common_attributes(hsdev, hsdev->usage, &accel_state->common_attributes, accel_3d_sensitivity_addresses, ARRAY_SIZE(accel_3d_sensitivity_addresses));
 +	if (ret) {
 +		dev_err(&pdev->dev, "failed to setup common attributes\n");
 +		return ret;
@@ -875,16 +851,16 @@ diff -ruN a/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c b/drivers/ii
 +	indio_dev->dev.parent = &pdev->dev;
 +	indio_dev->info = &accel_3d_info;
 +	indio_dev->name = "cros-ec-accel";
-+	indio_dev->modes = INDIO_BUFFER_SOFTWARE;
++	//indio_dev->modes = INDIO_BUFFER_SOFTWARE;
 +	
 +	iio_device_set_clock(indio_dev, CLOCK_BOOTTIME);
 +
-+	buffer = devm_iio_kfifo_allocate(&pdev->dev);
-+	if (!buffer)
-+		return -ENOMEM;
-+	
-+	iio_device_attach_buffer(indio_dev, buffer);
-+	iio_buffer_set_attrs(indio_dev->buffer, cros_compat_attributes);
++	ret = devm_iio_kfifo_buffer_setup_ext(&pdev->dev, indio_dev, INDIO_BUFFER_SOFTWARE, NULL, cros_compat_attributes);
++	if (ret) {
++		dev_err(&pdev->dev, "failed to setup kfifo buffer\n");
++		goto error_free_dev_mem;
++	}
++
 +	atomic_set(&accel_state->common_attributes.data_ready, 0);
 +	iio_device_set_drvdata(indio_dev, &accel_state->common_attributes);
 +
@@ -1017,6 +993,8 @@ diff -ruN a/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c b/drivers/ii
 +
 +MODULE_DESCRIPTION("HID Sensors support for ChromeOS");
 +MODULE_LICENSE("GPL");
++MODULE_IMPORT_NS(IIO_HID);
++MODULE_IMPORT_NS(IIO_HID_ATTRIBUTES);
 diff -ruN a/drivers/iio/common/hid-sensors/Makefile b/drivers/iio/common/hid-sensors/Makefile
 --- a/drivers/iio/common/hid-sensors/Makefile	2020-01-10 19:22:31.000000000 +0100
 +++ b/drivers/iio/common/hid-sensors/Makefile	2020-03-19 08:11:22.482375991 +0100
