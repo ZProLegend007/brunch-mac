@@ -3,7 +3,7 @@ name: Build Brunch-mac using Github Actions
 on:
   workflow_dispatch:
     branches:
-      - 'Live'
+      - 'Live-6.1'
     paths-ignore:
       - 'README.md'
 
