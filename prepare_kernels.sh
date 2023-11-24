@@ -57,9 +57,8 @@ for kernel in $kernels; do
 		5.10)
 			echo "Downloading ChromiumOS kernel source for kernel $kernel version $kernel_version"
 			curl -L "https://chromium.googlesource.com/chromiumos/third_party/kernel/+archive/$kernel_remote_path$kernel.tar.gz" -o "./kernels/chromiumos-$kernel.tar.gz" || { echo "Kernel source download failed"; exit 1; }
-			mkdir "./kernels/macbook" "./kernels/5.10"
+			mkdir "./kernels/macbook"
 			tar -C "./kernels/macbook" -zxf "./kernels/chromiumos-$kernel.tar.gz" || { echo "Kernel source extraction failed"; exit 1; }
-			tar -C "./kernels/5.10" -zxf "./kernels/chromiumos-$kernel.tar.gz" chromeos || { echo "Kernel source extraction failed"; exit 1; }
 			rm -f "./kernels/chromiumos-$kernel.tar.gz"
 			apply_patches "macbook"
 			make_config "macbook"
