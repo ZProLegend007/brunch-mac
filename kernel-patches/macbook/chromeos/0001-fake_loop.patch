@@ -11,6 +11,15 @@
  	i = err;
  
  	err = -ENOMEM;
+@@ -2363,7 +2367,7 @@
+ 	 * complicated, are too static, inflexible and may surprise
+ 	 * userspace tools. Parameters like this in general should be avoided.
+ 	 */
+-	if (!part_shift)
++	if (!part_shift && i != 4096)
+ 		disk->flags |= GENHD_FL_NO_PART;
+ 	disk->flags |= GENHD_FL_EXT_DEVT;
+ 	atomic_set(&lo->lo_refcnt, 0);
 @@ -2373,13 +2377,19 @@
  	spin_lock_init(&lo->lo_work_lock);
  	disk->major		= LOOP_MAJOR;
@@ -46,7 +55,7 @@
  	/* pre-create number of devices given by config or max_loop */
  	for (i = 0; i < nr; i++)
  		loop_add(i);
-+	//loop_add(4096);
++	loop_add(4096);
  
  	printk(KERN_INFO "loop: module loaded\n");
  	return 0;
