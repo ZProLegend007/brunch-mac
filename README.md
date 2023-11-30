@@ -2,7 +2,7 @@
 [license-shield]: https://img.shields.io/github/license/sebanc/brunch?label=License&logo=Github&style=flat-square
 
 <h1 align="center">Brunch-mac Framework</h1>
-<h4 align="center">A fork of the Brunch Framework focused on compatibility and optimization for T2 Macs</h4>
+<h4 align="center">The Brunch Framework modified for compatibility and optimization for T2 Macs</h4>
 
 [![License][license-shield]][license-url]
 
@@ -10,7 +10,7 @@
 
 This install guide assumes you already have Windows Bootcamp or linux installed on your device.
 
-To install this fork please download the latest release and place it in a folder on your chosen OS (other than MacOS). Then head to [this website](https://cros.tech/device/shyvana/) and download the latest chromeOS image, then also place that file in your folder. 
+To install please download the latest release and place it in a folder on your chosen OS (other than MacOS). Then head to [this website](https://cros.tech/device/shyvana/) and download the latest chromeOS image, then also place that file in your folder. 
 
 Then with either WSL or a linux terminal `cd` into your folder and run the command `tar -zxvf *brunchmacfile.tar.gz*`. Make sure to replace the *brunchmacfile* with the actual name of the brunch-mac file that you downloaded. **TIP: Use tab to autofill the file name.**
 
@@ -34,4 +34,4 @@ If you run into any problems, issues or need any help feel free to make an issue
 
 ## Check out the original [Brunch Framework](https://github.com/sebanc/brunch)
 
-This repo is a fork of the [brunch-unstable](https://github.com/sebanc/brunch-unstable) building repo, credit to sebanc for the original Brunch Framework and all the effort that he has put in to get it to where it is today. For more information on this project, check out his repo.
+This repo was a fork of the [brunch-unstable](https://github.com/sebanc/brunch-unstable) building repo, credit to sebanc for the original Brunch Framework and all the effort that he has put in to get it to where it is today. For more information on this project, check out his repo.
