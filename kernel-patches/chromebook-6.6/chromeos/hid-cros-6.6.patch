@@ -5,36 +5,18 @@
      struct hid_sensor_cros_compat_data *data = indio_dev->priv;
      int ret;
 
-+    ret = devm_iio_kfifo_buffer_setup_ext(
-+        &indio_dev->dev, indio_dev, NULL,
-+        (const struct iio_dev_attr **) cros_compat_attributes);
++    ret = devm_iio_kfifo_buffer_setup_ext(&indio_dev->dev, indio_dev, NULL, (const struct iio_dev_attr **)cros_compat_attributes);
      if (ret)
          goto err_free_data;
 
      data->hid_dev = hid_open_device(data->vendor_id, data->product_id);
-     if (!data->hid_dev) {
-         dev_err(&indio_dev->dev, "failed to open HID device\n");
-         ret = -ENODEV;
-         goto err_free_data;
-     }
-
-     ret = hid_sensor_common_probe(indio_dev);
-@@ -840,6 +840,7 @@ static int hid_accel_3d_probe(struct iio_dev *indio_dev)
+@@ -840,6 +841,7 @@ static int hid_accel_3d_probe(struct iio_dev *indio_dev)
  {
      struct hid_sensor_cros_compat_data *data = indio_dev->priv;
      int ret;
 
-+    ret = devm_iio_kfifo_buffer_setup_ext(
-+        &indio_dev->dev, indio_dev, NULL,
-+        (const struct iio_dev_attr **) cros_compat_attributes);
++    ret = devm_iio_kfifo_buffer_setup_ext(&indio_dev->dev, indio_dev, NULL, (const struct iio_dev_attr **)cros_compat_attributes);
      if (ret)
          goto err_free_data;
 
      data->hid_dev = hid_open_device(data->vendor_id, data->product_id);
-     if (!data->hid_dev) {
-         dev_err(&indio_dev->dev, "failed to open HID device\n");
-         ret = -ENODEV;
-         goto err_free_data;
-     }
-
-     ret = hid_sensor_common_probe(indio_dev);
