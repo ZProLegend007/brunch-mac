@@ -82,7 +82,7 @@ kernel_version="$(file ./out/arch/x86/boot/bzImage | cut -d' ' -f9)"
 cp ./out/arch/x86/boot/bzImage ../../home/chronos/rootc/kernel-"$kernel" || { echo "Failed to copy the kernel $kernel"; exit 1; }
 make -j"$NTHREADS" O=out INSTALL_MOD_STRIP=1 INSTALL_MOD_PATH=../../../home/chronos/kernel modules_install || { echo "Failed to install modules for kernel $kernel"; exit 1; }
 rm ../../home/chronos/kernel/lib/modules/"$kernel_version"/build || { echo "Failed to remove the build directory for kernel $kernel"; exit 1; }
-rm ../../home/chronos/kernel/lib/modules/"$kernel_version"/source || { echo "Failed to remove the source directory for kernel $kernel"; exit 1; }
+rm ../../home/chronos/kernel/lib/modules/6.6/source || { echo "Failed to remove the source directory for kernel $kernel"; exit 1; }
 cp -r ./headers ../../home/chronos/kernel/lib/modules/"$kernel_version"/build || { echo "Failed to replace the build directory for kernel $kernel"; exit 1; }
 mkdir -p ../../home/chronos/kernel/usr/src || { echo "Failed to create the linux-headers directory for kernel $kernel"; exit 1; }
 ln -s /lib/modules/"$kernel_version"/build ../../home/chronos/kernel/usr/src/linux-headers-"$kernel_version" || { echo "Failed to symlink the linux-headers directory for kernel $kernel"; exit 1; }
