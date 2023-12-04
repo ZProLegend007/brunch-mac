@@ -14,13 +14,3 @@
  /* Device links support. */
  
  #ifdef CONFIG_SRCU
-@@ -1267,6 +1274,9 @@
- 	bool val;
- 	int ret;
- 
-+	if (enforce_hyperthreading)
-+		return count;
-+
- 	ret = strtobool(buf, &val);
- 	if (ret < 0)
- 		return ret;
