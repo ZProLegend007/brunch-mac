@@ -7,7 +7,7 @@
 
      data->hid_dev = hid_open_device(data->vendor_id, data->product_id);
      if (!data->hid_dev) {
-         dev_err(&indio_dev->dev, "failed to open HID device\n");
+         dev_err(&indio_dev->dev, "failed to open HID device");
          ret = -ENODEV;
          goto err_free_data;
      }
