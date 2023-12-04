@@ -1,5 +1,5 @@
---- drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c
-+++ drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c
+--- a/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c
++++ b/drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c
 @@ -463,6 +463,7 @@ static int hid_als_probe(struct iio_dev *indio_dev)
  {
      struct hid_sensor_cros_compat_data *data = indio_dev->priv;
