@@ -10,6 +10,9 @@ fi
 
 for kernel in $kernels; do
 	echo "Building kernel $kernel"
+	echo "Removing hid-sensor-cros-compat module..." || { echo "Removal failed."; exit 1; }
+	rm /drivers/iio/common/hid-sensors/hid-sensor-cros-compat.c
+	echo "Success."
 	KCONFIG_NOTIMESTAMP=1 KBUILD_BUILD_TIMESTAMP='' KBUILD_BUILD_USER=chronos KBUILD_BUILD_HOST=localhost make -C "./kernels/$kernel" -j"$NTHREADS" O=out || { echo "Kernel build failed"; exit 1; }
 	rm -f "./kernels/$kernel/out/source"
 	if [ -f /persist/keys/brunch.priv ] && [ -f /persist/keys/brunch.pem ]; then
