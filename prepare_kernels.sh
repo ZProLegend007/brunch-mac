@@ -35,7 +35,7 @@ download_and_patch_kernels()
 # kernel_remote_path="$(git ls-remote https://chromium.googlesource.com/chromiumos/third_party/kernel/ | grep "refs/heads/release-$chromeos_version" | head -1 | sed -e 's#.*\t##' -e 's#chromeos-.*##' | sort -u)chromeos-"
 # [ ! "x$kernel_remote_path" == "x" ] || { echo "Remote path not found"; exit 1; }
 
-kernel_remote_path="/refs/heads/chromeos-"
+kernel_remote_path="refs/heads/chromeos-"
 echo "kernel_remote_path=$kernel_remote_path"
 
 # Download kernels source
