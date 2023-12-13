@@ -14,7 +14,7 @@ I am currently testing Brunch-mac with multiple kernels to find the most stable 
 
 **Kernel 6.1** - No Bluetooth, No audio, possible touchpad issues with MacBook Pro 2020.
 
-**Kernel 6.6** - No Bluetooth, No audio, Touchbar issues with new driver.
+**Kernel 6.6** - No Bluetooth, No audio, Touchbar issues with new driver, Wi-Fi DHCP lookup error, shutdown issues.
 
 ## Install Instructions
 
