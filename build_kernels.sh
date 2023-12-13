@@ -9,6 +9,10 @@ kernels="$1"
 fi
 
 for kernel in $kernels; do
+	echo || ls
+	echo || pwd
+	ls
+	pwd
 	echo "Building kernel $kernel"
 	KCONFIG_NOTIMESTAMP=1 KBUILD_BUILD_TIMESTAMP='' KBUILD_BUILD_USER=chronos KBUILD_BUILD_HOST=localhost make -C "./kernels/$kernel" -j"$NTHREADS" O=out || { echo "Kernel build failed"; exit 1; }
 	rm -f "./kernels/$kernel/out/source"
