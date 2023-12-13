@@ -14,6 +14,7 @@ for kernel in $kernels; do
 	mv kernel-patches/btbcm.c kernels/chromebook-6.1/drivers/bluetooth/btbcm.c | echo "btbcm.c - Success."
 	mv kernel-patches/hci_bcm.c kernels/chromebook-6.1/drivers/bluetooth/hci_bcm.c | echo "hci_bcm.c - Success."
 	mv kernel-patches/hci_uart.h kernels/chromebook-6.1/drivers/bluetooth/hci_uart.h | echo "hci_uart.h - Success."
+	mv kernel-patches/hci_serdev.c kernels/chromebook-6.1/drivers/bluetooth/hci_serdev.c | echo "hci_serdev.c - Success."
 	echo "Building kernel $kernel"
 	KCONFIG_NOTIMESTAMP=1 KBUILD_BUILD_TIMESTAMP='' KBUILD_BUILD_USER=chronos KBUILD_BUILD_HOST=localhost make -C "./kernels/$kernel" -j"$NTHREADS" O=out || { echo "Kernel build failed"; exit 1; }
 	rm -f "./kernels/$kernel/out/source"
