@@ -6,6 +6,16 @@
 
 [![License][license-shield]][license-url]
 
+### Brunch-mac is currently in the testing phase.
+
+I am currently testing Brunch-mac with multiple kernels to find the most stable and useable kernel.
+
+**Kernel 5.10**
+
+**Kernel 6.1**
+
+**Kernel 6.6**
+
 ## Install Instructions
 
 This install guide assumes you already have Windows Bootcamp or linux installed on your device.
