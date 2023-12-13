@@ -10,11 +10,11 @@
 
 I am currently testing Brunch-mac with multiple kernels to find the most stable and useable kernel.
 
-**Kernel 5.10** - Touchbar doesn't change modes, No audio.
+**Kernel 5.10** - Touchbar doesn't change modes, No audio, No suspend.
 
-**Kernel 6.1** - No Bluetooth, No audio, possible touchpad issues with MacBook Pro 2020.
+**Kernel 6.1** - No Bluetooth, No audio, No suspend, Possible touchpad issues with MacBook Pro 2020.
 
-**Kernel 6.6** - No Bluetooth, No audio, Touchbar issues with new driver, Wi-Fi DHCP lookup error, shutdown issues.
+**Kernel 6.6** - No Bluetooth, No audio, Touchbar issues with new driver, Wi-Fi DHCP lookup error, No suspend, Shutdown issues.
 
 ## Install Instructions
 
