@@ -9,9 +9,13 @@ kernels="$1"
 fi
 
 for kernel in $kernels; do
-	echo "Patching intel_lpss files..."
-	mv kernel-patches/intel_lpss.c kernels/chromebook-6.1/drivers/bluetooth/intel_lpss.c | echo "intel_lpss.c - Success."
-	mv kernel-patches/intel_lpss_pci.c kernels/chromebook-6.1/drivers/bluetooth/intel_lpss_pci.c | echo "intel_lpss_pci.c - Success."
+	echo "Fixing bluetooth files..."
+	mv kernel-patches/btbcm.h kernels/chromebook-6.1/drivers/bluetooth/btbcm.h | echo "btbcm.h - Success."
+	mv kernel-patches/btbcm.c kernels/chromebook-6.1/drivers/bluetooth/btbcm.c | echo "btbcm.c - Success."
+	mv kernel-patches/hci_bcm.c kernels/chromebook-6.1/drivers/bluetooth/hci_bcm.c | echo "hci_bcm.c - Success."
+#	mv kernel-patches/hci_uart.h kernels/chromebook-6.1/drivers/bluetooth/hci_uart.h | echo "hci_uart.h - Success."
+	mv kernel-patches/hci_serdev.c kernels/chromebook-6.1/drivers/bluetooth/hci_serdev.c | echo "hci_serdev.c - Success."
+#	mv kernel-patches/hci_ldisc.c kernels/chromebook-6.1/drivers/bluetooth/hci_ldisc.c | echo "hci_ldisc.c - Success."
 	echo "Building kernel $kernel"
 	KCONFIG_NOTIMESTAMP=1 KBUILD_BUILD_TIMESTAMP='' KBUILD_BUILD_USER=chronos KBUILD_BUILD_HOST=localhost make -C "./kernels/$kernel" -j"$NTHREADS" O=out || { echo "Kernel build failed"; exit 1; }
 	rm -f "./kernels/$kernel/out/source"
