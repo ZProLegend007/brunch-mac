@@ -16,7 +16,7 @@ I am currently testing Brunch-mac with multiple kernels to find the most stable 
 
 ~~**Kernel 6.6** - No Bluetooth, No audio, Touchbar issues with new driver, Wi-Fi DHCP lookup error, No suspend, Shutdown issues.~~
 
-**T2 Kernel???**
+~~**T2 Kernel???**~~
 
 ## Install Instructions
 
