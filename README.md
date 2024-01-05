@@ -8,7 +8,7 @@
 
 ## Brunch mac is still being debugged.
 
-###The combination of the linux kernel and chromeOS doesn't play too well with apple hardware so there are some bugs to squash before things work as expected. See the roadmap linked here: [Brunch-mac Roadmap](https://github.com/users/ZProLegend007/projects/3)
+### The combination of the linux kernel and chromeOS doesn't play too well with apple hardware so there are some bugs to squash before things work as expected. See the roadmap linked here: [Brunch-mac Roadmap](https://github.com/users/ZProLegend007/projects/3)
 
 ## Install Instructions
 
