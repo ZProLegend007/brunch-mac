@@ -10,8 +10,10 @@ fi
 
 for kernel in $kernels; do
 	echo "Patching bluetooth files..."
-	rm kernels/chromebook-6.1/drivers/bluetooth/* | echo "Removed old files."
-	mv kernel-patches/Bluetooth/* kernels/chromebook-6.1/drivers/bluetooth/ | echo "Added new files."
+	rm kernels/chromebook-6.1/drivers/bluetooth/* | echo "Removed old bluetooth files."
+	mv kernel-patches/Bluetooth/* kernels/chromebook-6.1/drivers/bluetooth/ | echo "Added new bluetooth files."
+	mv kernel-patches/tty.h kernels/chromebook-6.1/include/linux/tty.h | echo "Replaced tty.h"
+	mv kernel-patches/tty_ldisc.h kernels/chromebook-6.1/include/linux/tty_ldisc.h | echo "Replaced tty_ldisc.h"
 	echo "Finished."
 	echo "Building kernel $kernel"
 	KCONFIG_NOTIMESTAMP=1 KBUILD_BUILD_TIMESTAMP='' KBUILD_BUILD_USER=chronos KBUILD_BUILD_HOST=localhost make -C "./kernels/$kernel" -j"$NTHREADS" O=out || { echo "Kernel build failed"; exit 1; }
