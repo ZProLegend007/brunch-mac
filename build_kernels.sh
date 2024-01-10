@@ -9,6 +9,9 @@ kernels="$1"
 fi
 
 for kernel in $kernels; do
+	echo "Patching intel-lpss files..."
+	mv kernel-patches/intel-lpss.c kernels/chromebook-6.1/drivers/bluetooth/intel-lpss.c | echo "intel-lpss.c - Success."
+	mv kernel-patches/intel-lpss-pci.c kernels/chromebook-6.1/drivers/bluetooth/intel-lpss-pci.c | echo "intel-lpss-pci.c - Success."
 	echo "Building kernel $kernel"
 	KCONFIG_NOTIMESTAMP=1 KBUILD_BUILD_TIMESTAMP='' KBUILD_BUILD_USER=chronos KBUILD_BUILD_HOST=localhost make -C "./kernels/$kernel" -j"$NTHREADS" O=out || { echo "Kernel build failed"; exit 1; }
 	rm -f "./kernels/$kernel/out/source"
