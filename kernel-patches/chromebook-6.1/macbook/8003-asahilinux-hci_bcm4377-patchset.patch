@@ -51,6 +51,89 @@ Signed-off-by: Sven Peter <sven@svenpeter.dev>
  include/net/bluetooth/hci.h | 1 +
  net/bluetooth/hci_event.c   | 2 +-
  2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index e004ba04a9ae..f4aa7b78a844 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -2580,6 +2580,7 @@ struct hci_ev_le_conn_complete {
+ #define LE_EXT_ADV_DIRECT_IND		0x0004
+ #define LE_EXT_ADV_SCAN_RSP		0x0008
+ #define LE_EXT_ADV_LEGACY_PDU		0x0010
++#define LE_EXT_ADV_EVT_TYPE_MASK	0x007f
+ 
+ #define ADDR_LE_DEV_PUBLIC		0x00
+ #define ADDR_LE_DEV_RANDOM		0x01
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index faca701bce2a..ade2628aae0d 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6494,7 +6494,7 @@ static void hci_le_ext_adv_report_evt(struct hci_dev *hdev, void *data,
+ 					info->length))
+ 			break;
+ 
+-		evt_type = __le16_to_cpu(info->type);
++		evt_type = __le16_to_cpu(info->type) & LE_EXT_ADV_EVT_TYPE_MASK;
+ 		legacy_evt_type = ext_evt_type_to_legacy(hdev, evt_type);
+ 		if (legacy_evt_type != LE_ADV_INVALID) {
+ 			process_adv_report(hdev, legacy_evt_type, &info->bdaddr,
+-- 
+2.38.0
+
+From f8a43896f03b18821f978baab29c6d2a4bd750af Mon Sep 17 00:00:00 2001
+From: Sven Peter <sven@svenpeter.dev>
+Date: Thu, 27 Oct 2022 17:08:22 +0200
+Subject: [PATCH 7/7] Bluetooth: hci_bcm4377: Add new driver for BCM4377 PCIe
+ boards
+
+Broadcom BCM4377/4378/4387 are dual WiFi/Bluetooth boards found in Apple
+machines. This driver adds support for the Bluetooth function which
+exposes a shared memory IPC protocol over PCIe to tunnel HCI traffic.
+
+Signed-off-by: Sven Peter <sven@svenpeter.dev>
+---
+ MAINTAINERS                     |    1 +
+ drivers/bluetooth/Kconfig       |   12 +
+ drivers/bluetooth/Makefile      |    1 +
+ drivers/bluetooth/hci_bcm4377.c | 2514 +++++++++++++++++++++++++++++++
+ 4 files changed, 2528 insertions(+)
+ create mode 100644 drivers/bluetooth/hci_bcm4377.c
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1f87bfaa1557..0c20464d956b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1911,6 +1911,7 @@ F:	Documentation/devicetree/bindings/pinctrl/apple,pinctrl.yaml
+ F:	Documentation/devicetree/bindings/power/apple*
+ F:	Documentation/devicetree/bindings/watchdog/apple,wdt.yaml
+ F:	arch/arm64/boot/dts/apple/
++F:	drivers/bluetooth/hci_bcm4377.c
+ F:	drivers/clk/clk-apple-nco.c
+ F:	drivers/dma/apple-admac.c
+ F:	drivers/i2c/busses/i2c-pasemi-core.c
+diff --git a/drivers/bluetooth/Kconfig b/drivers/bluetooth/Kconfig
+index e30707405455..71732e51516f 100644
+--- a/drivers/bluetooth/Kconfig
++++ b/drivers/bluetooth/Kconfig
+@@ -274,6 +274,18 @@ config BT_HCIBCM203X
+ 	  Say Y here to compile support for HCI BCM203x devices into the
+ 	  kernel or say M to compile it as module (bcm203x).
+ 
++
++config BT_HCIBCM4377
++	tristate "HCI BCM4377/4378/4387 PCIe driver"
++	depends on PCI
++	select FW_LOADER
++	help
++	  Support for Broadcom BCM4377/4378/4387 Bluetooth chipsets attached via
++	  PCIe. These are usually found in Apple machines.
++
++	  Say Y here to compile support for HCI BCM4377 family devices into the
++	  kernel or say M to compile it as module (hci_bcm4377).
++
+ config BT_HCIBPA10X
+ 	tristate "HCI BPA10x USB driver"
+ 	depends on USB
 From 0bab5cc74a5756cd0d9f37d0277f98d7a14a3d7b Mon Sep 17 00:00:00 2001
 From: Sven Peter <sven@svenpeter.dev>
 Date: Thu, 27 Oct 2022 17:08:20 +0200
@@ -197,89 +280,6 @@ index 76c3107c9f91..91788d356748 100644
 -- 
 2.38.0
 
-
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index e004ba04a9ae..f4aa7b78a844 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -2580,6 +2580,7 @@ struct hci_ev_le_conn_complete {
- #define LE_EXT_ADV_DIRECT_IND		0x0004
- #define LE_EXT_ADV_SCAN_RSP		0x0008
- #define LE_EXT_ADV_LEGACY_PDU		0x0010
-+#define LE_EXT_ADV_EVT_TYPE_MASK	0x007f
- 
- #define ADDR_LE_DEV_PUBLIC		0x00
- #define ADDR_LE_DEV_RANDOM		0x01
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index faca701bce2a..ade2628aae0d 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6494,7 +6494,7 @@ static void hci_le_ext_adv_report_evt(struct hci_dev *hdev, void *data,
- 					info->length))
- 			break;
- 
--		evt_type = __le16_to_cpu(info->type);
-+		evt_type = __le16_to_cpu(info->type) & LE_EXT_ADV_EVT_TYPE_MASK;
- 		legacy_evt_type = ext_evt_type_to_legacy(hdev, evt_type);
- 		if (legacy_evt_type != LE_ADV_INVALID) {
- 			process_adv_report(hdev, legacy_evt_type, &info->bdaddr,
--- 
-2.38.0
-
-From f8a43896f03b18821f978baab29c6d2a4bd750af Mon Sep 17 00:00:00 2001
-From: Sven Peter <sven@svenpeter.dev>
-Date: Thu, 27 Oct 2022 17:08:22 +0200
-Subject: [PATCH 7/7] Bluetooth: hci_bcm4377: Add new driver for BCM4377 PCIe
- boards
-
-Broadcom BCM4377/4378/4387 are dual WiFi/Bluetooth boards found in Apple
-machines. This driver adds support for the Bluetooth function which
-exposes a shared memory IPC protocol over PCIe to tunnel HCI traffic.
-
-Signed-off-by: Sven Peter <sven@svenpeter.dev>
----
- MAINTAINERS                     |    1 +
- drivers/bluetooth/Kconfig       |   12 +
- drivers/bluetooth/Makefile      |    1 +
- drivers/bluetooth/hci_bcm4377.c | 2514 +++++++++++++++++++++++++++++++
- 4 files changed, 2528 insertions(+)
- create mode 100644 drivers/bluetooth/hci_bcm4377.c
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1f87bfaa1557..0c20464d956b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1911,6 +1911,7 @@ F:	Documentation/devicetree/bindings/pinctrl/apple,pinctrl.yaml
- F:	Documentation/devicetree/bindings/power/apple*
- F:	Documentation/devicetree/bindings/watchdog/apple,wdt.yaml
- F:	arch/arm64/boot/dts/apple/
-+F:	drivers/bluetooth/hci_bcm4377.c
- F:	drivers/clk/clk-apple-nco.c
- F:	drivers/dma/apple-admac.c
- F:	drivers/i2c/busses/i2c-pasemi-core.c
-diff --git a/drivers/bluetooth/Kconfig b/drivers/bluetooth/Kconfig
-index e30707405455..71732e51516f 100644
---- a/drivers/bluetooth/Kconfig
-+++ b/drivers/bluetooth/Kconfig
-@@ -274,6 +274,18 @@ config BT_HCIBCM203X
- 	  Say Y here to compile support for HCI BCM203x devices into the
- 	  kernel or say M to compile it as module (bcm203x).
- 
-+
-+config BT_HCIBCM4377
-+	tristate "HCI BCM4377/4378/4387 PCIe driver"
-+	depends on PCI
-+	select FW_LOADER
-+	help
-+	  Support for Broadcom BCM4377/4378/4387 Bluetooth chipsets attached via
-+	  PCIe. These are usually found in Apple machines.
-+
-+	  Say Y here to compile support for HCI BCM4377 family devices into the
-+	  kernel or say M to compile it as module (hci_bcm4377).
-+
- config BT_HCIBPA10X
- 	tristate "HCI BPA10x USB driver"
- 	depends on USB
 diff --git a/drivers/bluetooth/Makefile b/drivers/bluetooth/Makefile
 index 3321a8aea4a0..e0b261f24fc9 100644
 --- a/drivers/bluetooth/Makefile
