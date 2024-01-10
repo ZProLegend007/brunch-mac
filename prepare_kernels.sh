@@ -45,7 +45,8 @@ for kernel in $kernels; do
 	case "$kernel" in
 		6.1)
 			echo "Downloading ChromiumOS kernel source for kernel $kernel version $kernel_version"
-			curl -L "https://chromium.googlesource.com/chromiumos/third_party/kernel/+archive/$kernel_remote_path$kernel.tar.gz" -o "./kernels/chromiumos-$kernel.tar.gz" || { echo "Kernel source download failed"; exit 1; }
+			echo "Manually downloading kernel 6.1.30..."
+			curl -L "https://chromium.googlesource.com/chromiumos/third_party/kernel/+archive/a343b0dd87b42ba9d508fbf7d0c06f744c2e0954.tar.gz" -o "./kernels/chromiumos-$kernel.tar.gz" || { echo "Kernel source download failed"; exit 1; }
 			mkdir "./kernels/chromebook-6.1" #"./kernels/6.1"
 			tar -C "./kernels/chromebook-6.1" -zxf "./kernels/chromiumos-$kernel.tar.gz" || { echo "Kernel $kernel source extraction failed"; exit 1; }
 			rm -f "./kernels/chromiumos-$kernel.tar.gz"
