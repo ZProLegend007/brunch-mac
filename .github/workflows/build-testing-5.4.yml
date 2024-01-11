@@ -1,9 +1,9 @@
-name: (5.10) Build Testing Brunch-mac using Github Actions
+name: (5.4) Build Testing Brunch-mac using Github Actions
 
 on:
   workflow_dispatch:
     branches:
-      - 'Testing-5.10'
+      - 'Testing-5.4'
     paths-ignore:
       - 'README.md'
 
@@ -169,13 +169,13 @@ jobs:
             NEW_DECIMAL="0"
           fi
           RELEASE_VERSION="${MAJOR_VERSION}.${NEW_DECIMAL}"
-          NEW_RELEASE_NAME="Brunch-mac ${RELEASE_VERSION} - TESTING - Kernel 5.10"
-          NEW_RELEASE_FILE="Brunch-mac_${RELEASE_VERSION}_TESTING_K5.10.tar.gz"
+          NEW_RELEASE_NAME="Brunch-mac ${RELEASE_VERSION} - TESTING - Kernel 5.4"
+          NEW_RELEASE_FILE="Brunch-mac_${RELEASE_VERSION}_TESTING_K5.4.tar.gz"
           echo "Found brunch release: ${RELEASE_FILE} with version ${RELEASE_VERSION}"
           echo "Renaming release file to: $NEW_RELEASE_FILE"
           mv "$RELEASE_FILE" "$NEW_RELEASE_FILE"
           echo "RELEASE_NAME=${NEW_RELEASE_NAME}" >> $GITHUB_ENV
-          echo "RELEASE_TAG=${RELEASE_VERSION}-Testing-K5.10" >> $GITHUB_ENV
+          echo "RELEASE_TAG=${RELEASE_VERSION}-Testing-K5.4" >> $GITHUB_ENV
           echo "RELEASE_FILE=${NEW_RELEASE_FILE}" >> $GITHUB_ENV
         id: generate-release-details
       - name: Create a release and upload artifacts as assets
