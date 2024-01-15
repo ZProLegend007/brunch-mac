@@ -10,6 +10,9 @@ for patch_type in "base" "others" "chromeos" "all_devices" "macbook"; do
 		done
 	fi
 done
+echo "Manually patching intel-lpss-pci.c using file from kernel 5.10..."
+mv ./kernel-patches/intel-lpss-pci.c ./kernels/chromebook-6.1/drivers/mfd/intel-lpss-pci.c
+echo "Patched."
 }
 
 make_config()
