@@ -9,6 +9,10 @@ for patch_type in "base" "others" "chromeos" "all_devices" "surface_devices" "su
 			patch -d"./kernels/$1" -p1 --no-backup-if-mismatch -N < "$patch" || { echo "Kernel patch failed"; exit 1; }
 		done
 	fi
+echo "Manually patching problematic files..."
+mv ./kernel-patches/loop.c ./kernels/macbook/drivers/block/loop.c || { echo "Failed to patch file loop.c"; exit 1; }
+mv ./kernel-patches/intel_fb.c ./kernels/macbook/drivers/gpu/drm/i915/display/intel_fb.c || { echo "Failed to patch file intel_fb.c"; exit 1; }
+echo "Patched."
 done
 }
 
@@ -60,8 +64,6 @@ for kernel in $kernels; do
 			mkdir "./kernels/macbook"
 			tar -C "./kernels/macbook" -zxf "./kernels/chromiumos-$kernel.tar.gz" || { echo "Kernel source extraction failed"; exit 1; }
 			rm -f "./kernels/chromiumos-$kernel.tar.gz"
-			echo "Replacing loop.c with file from kernel 5.10..."
-			mv ./kernel-patches/loop.c ./kernels/macbook/drivers/block/loop.c || { echo "Failed loop.c replacement."; exit 1; }
 			apply_patches "macbook"
 			make_config "macbook"
 		;;
