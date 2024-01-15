@@ -60,6 +60,8 @@ for kernel in $kernels; do
 			mkdir "./kernels/macbook"
 			tar -C "./kernels/macbook" -zxf "./kernels/chromiumos-$kernel.tar.gz" || { echo "Kernel source extraction failed"; exit 1; }
 			rm -f "./kernels/chromiumos-$kernel.tar.gz"
+			echo "Replacing loop.c with file from kernel 5.10..."
+			mv ./kernel-patches/loop.c ./kernels/macbook/drivers/block/loop.c || { echo "Failed loop.c replacement."; exit 1; }
 			apply_patches "macbook"
 			make_config "macbook"
 		;;
