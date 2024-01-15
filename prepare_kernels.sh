@@ -6,8 +6,7 @@ for patch_type in "base" "others" "chromeos" "all_devices" "surface_devices" "su
 	if [ -d "./kernel-patches/$1/$patch_type" ]; then
 		for patch in ./kernel-patches/"$1/$patch_type"/*.patch; do
 			echo "Applying patch: $patch"
-			patch -d"./kernels/$1" -p1 --no-backup-if-mismatch -N < "$patch" || { echo "Kernel patch failed"; #exit 1; }
-			cat drivers/gpu/drm/i915/display/intel_fb.c.rej
+			patch -d"./kernels/$1" -p1 --no-backup-if-mismatch -N < "$patch" || { echo "Kernel patch failed"; exit 1; }
 		done
 	fi
 done
