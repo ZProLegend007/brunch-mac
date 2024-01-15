@@ -48,15 +48,15 @@ kernel_remote_path="$(git ls-remote https://chromium.googlesource.com/chromiumos
 echo "kernel_remote_path=$kernel_remote_path"
 
 # Download kernels source
-kernels="5.10"
+kernels="5.15"
 for kernel in $kernels; do
 	kernel_version=$(curl -Ls "https://chromium.googlesource.com/chromiumos/third_party/kernel/+/$kernel_remote_path$kernel/Makefile?format=TEXT" | base64 --decode | sed -n -e 1,4p | sed -e '/^#/d' | cut -d'=' -f 2 | sed -z 's#\n##g' | sed 's#^ *##g' | sed 's# #.#g')
-	echo "kernel_version=$kernel_version"
+#	echo "kernel_version=$kernel_version"
 	[ ! "x$kernel_version" == "x" ] || { echo "Kernel version not found"; exit 1; }
 	case "$kernel" in
-		5.10)
-			echo "Downloading ChromiumOS kernel source for kernel $kernel version $kernel_version"
-			curl -L "https://chromium.googlesource.com/chromiumos/third_party/kernel/+archive/$kernel_remote_path$kernel.tar.gz" -o "./kernels/chromiumos-$kernel.tar.gz" || { echo "Kernel source download failed"; exit 1; }
+		5.15)
+			echo "Manually downloading kernel 5.15.146..."
+			curl -L "https://chromium.googlesource.com/chromiumos/third_party/kernel/+archive/26c690eff0a56293e0b6911a38e406c211b35547.tar.gz" -o "./kernels/chromiumos-$kernel.tar.gz" || { echo "Kernel source download failed"; exit 1; }
 			mkdir "./kernels/macbook"
 			tar -C "./kernels/macbook" -zxf "./kernels/chromiumos-$kernel.tar.gz" || { echo "Kernel source extraction failed"; exit 1; }
 			rm -f "./kernels/chromiumos-$kernel.tar.gz"
@@ -70,5 +70,5 @@ done
 rm -rf ./kernels
 mkdir ./kernels
 
-chromeos_version="R120"
+chromeos_version="R121"
 download_and_patch_kernels
