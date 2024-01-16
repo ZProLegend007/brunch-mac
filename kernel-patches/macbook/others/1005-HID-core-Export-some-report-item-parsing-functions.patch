@@ -143,9 +143,9 @@ index 8fcd663b10e2..f0d914238e55 100644
  
  	switch (item->tag) {
  	case HID_MAIN_ITEM_TAG_BEGIN_COLLECTION:
-@@ -712,12 +714,19 @@ static void hid_device_release(struct device *dev)
- 	kfree(hid);
- }
+@@ -735,12 +737,19 @@ static void hid_device_release(struct device *dev)
+	kref_put(&hid->ref, hiddev_free);
+}
  
 -/*
 +/**
