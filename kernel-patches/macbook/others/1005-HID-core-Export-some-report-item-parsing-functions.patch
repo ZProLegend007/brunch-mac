@@ -143,29 +143,6 @@ index 8fcd663b10e2..f0d914238e55 100644
  
  	switch (item->tag) {
  	case HID_MAIN_ITEM_TAG_BEGIN_COLLECTION:
-@@ -735,12 +737,19 @@ static void hid_device_release(struct device *dev)
-	kref_put(&hid->ref, hiddev_free);
-}
- 
--/*
-+/**
-+ * hid_fetch_item - fetch an item from a report
-+ *
-+ * @start: the current position in the report buffer to read the next item from
-+ * @end: the end of the report buffer
-+ * @item: the item struct to fill in
-+ *
-  * Fetch a report description item from the data stream. We support long
-  * items, though they are not used yet.
-+ *
-+ * Return: the position of the next item in the report
-  */
--
--static u8 *fetch_item(__u8 *start, __u8 *end, struct hid_item *item)
-+u8 *hid_fetch_item(__u8 *start, __u8 *end, struct hid_item *item)
- {
- 	u8 b;
- 
 @@ -778,6 +787,7 @@ static u8 *fetch_item(__u8 *start, __u8 *end, struct hid_item *item)
  
  	return NULL;
