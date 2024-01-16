@@ -2,10 +2,10 @@
 
 apply_patches()
 {
-# echo "Manually patching problematic files..."
-# mv ./kernel-patches/loop.c ./kernels/macbook/drivers/block/loop.c || { echo "Failed to patch file loop.c"; exit 1; }
+echo "Manually patching problematic files..."
+mv ./kernel-patches/loop.c ./kernels/macbook/drivers/block/loop.c || { echo "Failed to patch file loop.c"; exit 1; }
 # mv ./kernel-patches/intel_fb.c ./kernels/macbook/drivers/gpu/drm/i915/display/intel_fb.c || { echo "Failed to patch file intel_fb.c"; exit 1; }
-# echo "Patched."
+echo "Patched."
 for patch_type in "base" "others" "chromeos" "all_devices" "surface_devices" "surface_go_devices" "surface_mwifiex_pcie_devices" "surface_np3_devices"; do
 	if [ -d "./kernel-patches/$1/$patch_type" ]; then
 		for patch in ./kernel-patches/"$1/$patch_type"/*.patch; do
