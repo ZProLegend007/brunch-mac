@@ -2069,7 +2069,7 @@ static int loop_add(int i)
 	 */
 	blk_queue_flag_set(QUEUE_FLAG_NOMERGES, lo->lo_queue);
 	if (i != 4096)
-		disk = lo->lo_disk = alloc_disk(1 << part_shift);
+		disk = lo->lo_disk = blk_mq_alloc_disk(1 << part_shift);
 	else
 		disk = lo->lo_disk = alloc_disk(1 << fls(16));
 	/*
