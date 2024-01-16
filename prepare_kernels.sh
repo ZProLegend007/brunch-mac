@@ -4,7 +4,7 @@ apply_patches()
 {
 echo "Manually patching problematic files..."
 mv ./kernel-patches/loop.c ./kernels/macbook/drivers/block/loop.c || { echo "Failed to patch file loop.c"; exit 1; }
-# mv ./kernel-patches/intel_fb.c ./kernels/macbook/drivers/gpu/drm/i915/display/intel_fb.c || { echo "Failed to patch file intel_fb.c"; exit 1; }
+mv ./kernel-patches/trace_events.c ./kernels/macbook/kernel/trace/trace_events.c || { echo "Failed to patch file trace_events.c"; exit 1; }
 echo "Patched."
 for patch_type in "base" "others" "chromeos" "all_devices" "surface_devices" "surface_go_devices" "surface_mwifiex_pcie_devices" "surface_np3_devices"; do
 	if [ -d "./kernel-patches/$1/$patch_type" ]; then
@@ -59,7 +59,7 @@ for kernel in $kernels; do
 	[ ! "x$kernel_version" == "x" ] || { echo "Kernel version not found"; exit 1; }
 	case "$kernel" in
 		5.15)
-			echo "Manually downloading kernel 5.15.146..."
+			echo "Manually downloading latest 5.15 kernel..."
 			curl -L "https://chromium.googlesource.com/chromiumos/third_party/kernel/+archive/refs/heads/chromeos-5.15.tar.gz" -o "./kernels/chromiumos-$kernel.tar.gz" || { echo "Kernel source download failed"; exit 1; }
 			mkdir "./kernels/macbook"
 			tar -C "./kernels/macbook" -zxf "./kernels/chromiumos-$kernel.tar.gz" || { echo "Kernel source extraction failed"; exit 1; }
